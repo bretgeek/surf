@@ -1,12 +1,21 @@
 reget
 plugins/
+docfile
 web/
 old/
-imgs/
+imgs/contact.png
+imgs/favicon-32x32.png
+imgs/favicon.ico
+imgs/surf.svg
+
 node_modules/
 package-lock.json
 package.json
 surf.svg
+surf.bak
+todo
+surf.bak.bak
 .eslintrc.js
+githist
 
 
