@@ -40,26 +40,20 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 **Super Small!** - currently at around  ~13KB minified (smaller if gzipped).
 
 
-* 
-**Reactive Element Templates** - Reactive element templates are strings in your HTML that look like **{% raw %} {{msg}} {% endraw %}** and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
+* **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like **{% raw %} {{msg}} {% endraw %}** and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
 
 
-* 
-**Lightweight JQuery Clone** - Can be used as a general purpose JQuery like library.
+* **Lightweight JQuery Clone** - Can be used as a general purpose JQuery like library.
 
-* 
-**Easy Familiar Syntax** - familiar chainable syntax with built-in DOM manipulation methods.
+* **Easy Familiar Syntax** - familiar chainable syntax with built-in DOM manipulation methods.
 
-* 
-**Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX as well as solving CSS bleed issues from web components.
+* **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX as well as solving CSS bleed issues from web components.
 
 
-* 
-**Extendable** - Highly configurable (you can change anything you want about the base functionality with a run time config) and it's extendable with plugins.
+* **Extendable** - Highly configurable (you can change anything you want about the base functionality with a run time config) and it's extendable with plugins.
 
 
-* 
-**Versatile** - It's intended to give you power and not lock you down into any one way of doing things. You can probably find ways to use it that the author has not even thought of yet. Use it in ways that you and your team define!
+* **Versatile** - It's intended to give you power and not lock you down into any one way of doing things. You can probably find ways to use it that the author has not even thought of yet. Use it in ways that you and your team define!
 
 
 
