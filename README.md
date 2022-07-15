@@ -116,9 +116,8 @@ $(document).ready(kickoff);
 
 
 ### Is it working? 
-You should see this if it's working:
- I am app
 
+**You should now see "I am an App" in red.**
 
 
 
@@ -162,8 +161,8 @@ $('#msgapp').css('color: green;');
 
 ```
 
-
-This is a  my narly note!
+**You should now see:**
+**This is a  my narly note!**
 
 
 If you are lucky enough to catch a glimpse you should see the msg in the template change when the browser is done loading.
@@ -264,6 +263,8 @@ $(comp1).append(abutton);  // OR without a reference: $(comp1).append($().button
 
 ### See if it works!
 
+**You should now see a button with this text:**
+
 Count is: 0 
 
 
@@ -356,8 +357,10 @@ $('#comp2').append(abox); // add to somewhere in the DOM OR with variable instan
 
 
 
-You should now see three components - 1 containerBox component containing 2 buttonCounter components!
-Count is: 0 Count is: 0 
+** You should now see three components - 1 containerBox component containing 2 buttonCounter components!**
+
+Count is:0
+Count is: 0 
 
 We covered a lot of ground introducing the basics of **Surf JS** but the possibilities are endless!
 
