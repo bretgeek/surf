@@ -356,10 +356,10 @@ $('#comp2').append(abox); // add to somewhere in the DOM OR with variable instan
 
 
 
-You should now see three components - 1 containerBoxcomponent containing 2 buttonCounter components!
+You should now see three components - 1 containerBox component containing 2 buttonCounter components!
 Count is: 0 Count is: 0 
 
-We covered a lot of ground introducing the basics of **Surf JS** but the possiblilities are endless!
+We covered a lot of ground introducing the basics of **Surf JS** but the possibilities are endless!
 
 I hope you have enjoyed this short tutorial on getting started with **Surf JS** and would love to see what you will build.
 
