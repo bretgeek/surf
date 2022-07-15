@@ -200,16 +200,16 @@ Somewhere in your kickoff script file (or where it will be called by ready) defi
 
 // A button component that counts when clicked
 
-function buttonCounter(){
+function buttonCounter({color='red'}){ // You can also pass in a props object
 
    // The component with create a node each time it's used
 
-   let node = $().createNode('button');
+   const node = $().createNode('button');
 
 
    // This node's CSS, attributes, reactive template and html
 
-   $(node).html('Count is: {% raw %} {{cnt}} {% endraw %} ').attr('data-count', 0).css('cursor: pointer;');
+   $(node).html('Count is: {% raw %} {{cnt}} {% endraw %} ').attr('data-count', 0).css('cursor: pointer;').css(`color: ${color};`); // color from props;
 
 
    // initialize cnt template to 0
@@ -346,7 +346,7 @@ Somewhere else in your kickoff script add:
 ```js
 
 
-let abox = $().containerBox(); // create a new instance  
+const abox = $().containerBox(); // create a new instance  
 
 $('#comp2').append(abox); // add to somewhere in the DOM OR with variable instance do $('#comp2').append($().containerBox());
 
