@@ -209,7 +209,7 @@ function buttonCounter(props={}){
 
    // This node's CSS, attributes, reactive template and html
 
-   $(node).html('Count is: {% raw %} {{cnt}} {% endraw %} ').attr('data-count', 0).css('cursor: pointer;').css(`color: ${color};`); // color from props;
+   $(node).html('Count is:  {{cnt}}  ').attr('data-count', 0).css('cursor: pointer;').css(`color: ${color};`); // color from props;
 
 
    // initialize cnt template to 0
@@ -308,7 +308,7 @@ function containerBox(){
   
   // Some HTML with a reactive template for demonstration purposes.
 
-  $(node).html('{% raw %} {{ button }} {% endraw %}')
+  $(node).html(' {{ button }} ')
 
 
   // Some CSS to add a border so we can see it.
