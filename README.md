@@ -399,10 +399,12 @@ return this; // plugins must return this to be chainable
 Surf.plugin.fn.plug = plugme;
 
 // Use the new plugin:
-//Surf('#app').plugme();
 
 $('#app').plugme();
 
+// OR
+
+//Surf('#app').plugme();
 
 ```
 
