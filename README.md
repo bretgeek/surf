@@ -200,12 +200,12 @@ Somewhere in your kickoff script file (or where it will be called by ready) defi
 
 // A button component that counts when clicked
 
-function buttonCounter({color='red'}){ // You can also pass in a props object
+function buttonCounter(props={}){
+  let color = props.color || 'green';
 
    // The component with create a node each time it's used
 
    const node = $().createNode('button');
-
 
    // This node's CSS, attributes, reactive template and html
 

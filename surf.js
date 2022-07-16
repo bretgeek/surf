@@ -50,6 +50,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     isElement: isElement,
     isArray: isArray,
     scroller: scroller,
+    scroll: scroll,
     scrollTo: scrollTo,
     text: text,
     html: html,
@@ -906,6 +907,21 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     return this;
   }
 
+     /**
+   * scroll
+   * SCROLL
+   * @description Run fn on window load
+   * @return this
+   */
+  function scroll(fn) {
+    if (isFunction(fn)) {
+      window.addEventListener("scroll", fn, true);
+    }
+    return this;
+  }
+
+
+  
   /**
    * removeAttr
    * REMOVEAttr
