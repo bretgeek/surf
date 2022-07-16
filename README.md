@@ -40,7 +40,7 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 **Super Small!** - currently at around  ~13KB minified (smaller if gzipped).
 
 
-* **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like ** {{msg}} ** and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
+* **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like  {{msg}}  and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
 
 
 * **Lightweight JQuery Clone** - Can be used as a general purpose JQuery like library.
@@ -129,7 +129,7 @@ $(document).ready(kickoff);
 
 
 ### Reactive Element Templates
-**Surf JS** has a really powerful feature called **"Reactive Element Templates"** that allows you to manipulate your HTML with changing data defined by ** {{templates}} **. Since Reactive Templates resolve to functions (once they are activated) there is no DOM querying...changes are live! 
+**Surf JS** has a really powerful feature called **"Reactive Element Templates"** that allows you to manipulate your HTML with changing data defined by {{templates}}. Since Reactive Templates resolve to functions (once they are activated) there is no DOM querying...changes are live! 
 The main takeaway here is that...when your data changes, templates can be used to display your data as text, HTML or even components! 
 
 ### Lets start with a basic example to see how Reactive Templates work
