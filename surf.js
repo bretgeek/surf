@@ -1429,11 +1429,29 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description Show elements of stack.
    * @return Object
    */
-  function show({ dtype = "block", op = 1, v = "visible" } = {}) {
+  function show({
+   display = "block",
+    forceDisplay = false,
+  } = {}) {
     for (const y of _stk) {
-      y.style.visibility = v;
-      y.style.display = dtype;
-      y.style.opacity = op;
+      const vis = Surf()._cs(y, "visibility");
+
+      if (vis === "hidden") {
+        Surf(y).css("visibility: visible;");
+      }
+      let newdisp = display;
+      if (forceDisplay) {
+        newdisp = display;
+      } else {
+        newdisp = y.saveDisp || display;
+      }
+      const disp = Surf()._cs(y, "display");
+      // log('display is '+display)
+      if (disp === "none" || forceDisplay) {
+        Surf(y).css(`display: ${newdisp};`);
+      }
+      
+        Surf(y).css(`opacity: 1;`);
     }
     return this;
   }
