@@ -34,16 +34,15 @@
     if(cursor){
    Surf(dragee).css(`cursor: ${cursor};`);
     }
-    let active = false;
-    let currentX;
-    let currentY;
-    let initialX;
-    let initialY;
-    let xOffset = 0;
-    let yOffset = 0;
+    dragee.active = false;
+     dragee.currentX = dragee.currentX || 0;
+     dragee.currentY = dragee.currentY || 0;
+     dragee.initialX = dragee.inititalX || 0;
+     dragee.initialY = dragee.inititalY || 0;
+     dragee.xOffset = 0;
+     dragee.yOffset = 0;
     const containment = document.querySelectorAll(contain)[0];
     const parentContainer = dragee.parentNode || dragee.parentElement; // for dragEnd
-    const dragItem = dragee;
     let dropEl;
     if (drop && isString(drop) ) {
       dropEl = document.querySelector(drop);
@@ -66,73 +65,76 @@
  function dragStart(e) {
       // here we don't set dragee to absolute until dragging begins
      if(e.target.classList.contains('surf-draggable')){
-      const pos = Surf(dragee)._cs('position');
+      const pos = Surf(e.target)._cs('position');
       // console.log(pos);
-      if (pos !== 'absolute') {
-        Surf(dragee).css('position: absolute;');
+      // console.log(e.target.id);
+      if (pos !== 'relative') {
+      if (pos === 'absolute') { // if it is already absolute then do nothing
+      }else{
+        Surf(e.target).css('position: relative;');
+      }
       }
       if (e.type === 'touchstart') {
-        initialX = e.touches[0].clientX - xOffset;
-        initialY = e.touches[0].clientY - yOffset;
+        e.target.initialX = e.touches[0].clientX - dragee.xOffset;
+        e.target.initialY = e.touches[0].clientY - dragee.yOffset;
       } else {
         if (!first) { // for future use on first click/touch
           first = true;
-          initialX = e.clientX - xOffset;
-          initialY = e.clientY - yOffset;
-        // console.log(xOffset);
+          e.target.initialX = e.clientX - e.target.xOffset;
+          e.target.initialY = e.clientY - e.target.yOffset;
+        // console.log(e.target.xOffset);
         } else {
-          initialX = e.clientX - xOffset;
-          initialY = e.clientY - yOffset;
+          e.target.initialX = e.clientX - e.target.xOffset;
+          e.target.initialY = e.clientY - e.target.yOffset;
         }
       }
 
       if (e.target.matches(draghandle) || !draghandle) {
-        e.target.style.cssText = 'user-select: none; cursor: pointer;';
-        active = true;
+        Surf(e.target).css('user-select: none; cursor: pointer;');
+        e.target.active = true;
       }
-      //   setTranslate(xOffset, yOffset, dragItem);
-      setTranslate(currentX, currentY, dragItem);
+      setTranslate(e.target.currentX, e.target.currentY, e.target);
     }
     }
 
     function dragEnd(e) {
      if(e.target.classList.contains('surf-draggable')){
       // console.log('etype '+e.type)
-      initialX = currentX;
-      initialY = currentY;
+      e.target.initialX = e.target.currentX;
+      e.target.initialY = e.target.currentY;
       if (dropEl && isTouching({el: dropEl}) && active) {
         dropfn({dragee: e.target, dropee: dropEl} );
-        active = false;
+        e.target.active = false;
       }
-      active = false;
+      e.target.active = false;
 
-      setTranslate(currentX, currentY, dragItem);
+      setTranslate(e.target.currentX, e.target.currentY, e.target);
     }
     }
+
  function doDrag(e) {
      if(e.target.classList.contains('surf-draggable')){
-      if (active) {
+      if (e.target.active) {
         e.preventDefault();
 
         if (e.type === 'touchmove') {
-          currentX = e.touches[0].clientX - initialX;
-          currentY = e.touches[0].clientY - initialY;
+          e.target.currentX = e.touches[0].clientX - e.target.initialX;
+          e.target.currentY = e.touches[0].clientY - e.target.initialY;
         } else {
           // console.log('currentX '+currentX)
-          currentX = e.clientX - initialX;
-          currentY = e.clientY - initialY;
+          e.target.currentX = e.clientX - e.target.initialX;
+          e.target.currentY = e.clientY - e.target.initialY;
         }
 
         if (overEl && isTouching({el: overEl}) && Surf().isFunction(overfn) && active) {
-          overfn({dragee: dragee, dropee: overEl} );
+          overfn({dragee: e.target, dropee: overEl} );
         }
 
 
-        xOffset = currentX;
-        yOffset = currentY;
+        e.target.xOffset = e.target.currentX;
+        e.target.yOffset = e.target.currentY;
 
-        setTranslate(currentX, currentY, dragItem);
-        // setTranslate(xOffset, yOffset, dragItem);
+        setTranslate(e.target.currentX, e.target.currentY, e.target);
       }
     }
     }
@@ -176,47 +178,49 @@ function swipe({ up=false, down=false, left=false, right=false} = {}) {
     for( let dragee of this.stk){
         Surf(dragee).addClass('surf-swipe');
     const container = dragee;
-    container.addEventListener('touchstart', startTouch, {passive: true});
-    container.addEventListener('touchmove', moveTouch, {passive: true});
+    container.addEventListener('touchstart', startTouch, {passive: false});
+    container.addEventListener('touchmove', moveTouch, {passive: false});
 
     // Swipe Up / Down / Left / Right
-    let initialX = null;
-    let initialY = null;
+     dragee.inititalX  = null;
+     dragee.initialY = null;
 
     function startTouch(e) {
-      initialX = e.touches[0].clientX;
-      initialY = e.touches[0].clientY;
+      e.target.initialX = e.touches[0].clientX;
+      e.target.initialY = e.touches[0].clientY;
     };
 
     function moveTouch(e) {
-      if (initialX === null) {
+      e.preventDefault();
+
+      if (e.target.initialX === null) {
         return;
       }
 
-      if (initialY === null) {
+      if (e.target.initialY === null) {
         return;
       }
 
-      const currentX = e.touches[0].clientX;
-      const currentY = e.touches[0].clientY;
+      e.target.currentX = e.touches[0].clientX;
+      e.target.currentY = e.touches[0].clientY;
 
-      const diffX = initialX - currentX;
-      const diffY = initialY - currentY;
+      const diffX = e.target.initialX - e.target.currentX;
+      const diffY = e.target.initialY - e.target.currentY;
 
       if (Math.abs(diffX) > Math.abs(diffY)) {
       // sliding horizontally
         if (diffX > 0) {
         // swiped left
           if (Surf().isFunction(left)) {
-            if(dragee.classList.contains('surf-swipe')){
-              left(dragee);
+            if(e.target.classList.contains('surf-swipe')){
+              left(e.target);
             }
           }
         } else {
         // swiped right
           if (Surf().isFunction(right)) {
-            if(dragee.classList.contains('surf-swipe')){
-              right(dragee);
+            if(e.target.classList.contains('surf-swipe')){
+              right(e.target);
             }
           }
         }
@@ -225,24 +229,23 @@ function swipe({ up=false, down=false, left=false, right=false} = {}) {
         if (diffY > 0) {
         // swiped up
           if (Surf().isFunction(up)) {
-            if(dragee.classList.contains('surf-swipe')){
-            up(dragee);
+            if(e.target.classList.contains('surf-swipe')){
+            up(e.target);
             }
           }
         } else {
         // swiped down
           if (Surf().isFunction(down)) {
-            if(dragee.classList.contains('surf-swipe')){
-            down(dragee);
+            if(e.target.classList.contains('surf-swipe')){
+            down(e.target);
           }
           }
         }
       }
 
-      initialX = null;
-      initialY = null;
+      e.target.initialX = null;
+      e.target.initialY = null;
 
-      e.preventDefault();
     };
 }
     return this;
