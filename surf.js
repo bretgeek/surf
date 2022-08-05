@@ -57,6 +57,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     outerHTML: outerHTML,
     attr: attr,
     addClass: addClass,
+    hasClass: hasClass,
     removeClass: removeClass,
     classToggle: classToggle,
     toggle: toggle,
@@ -367,7 +368,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description Return computed Styles of el.
    * @return string or number
    */
-  function _cs(el, prop, trim = false) {
+  function _cs(el, prop, trim = true) {
     if (isString(el)) {
       el = document.querySelector(el);
     }
@@ -377,7 +378,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
         try {
           cs = _rpx(cs);
         } catch (e) {
-          log(e);
+         // log(e);
           throw e;
         }
       }
@@ -794,6 +795,17 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
         userCap = { capture: false };
       }
     }
+    
+     if(cap === 'passive'){
+
+        userCap = { passive: true };
+     }
+     if(cap === 'notpassive'){
+
+        userCap = { passive: false };
+     }
+
+
     // note do e.preventDefault() in the handlier
     const types = etype.split(",");
     for (const y of _stk) {
@@ -1722,6 +1734,23 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     }
     return this;
   }
+
+
+
+  /**
+   * hasClass
+   * HASCLASS
+   * @description Does first element have str as class?.
+   * @return Boolean
+   */
+  function hasClass(str){
+    if(_stk[0].classList.contains(str)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
   /**
    * addClass
