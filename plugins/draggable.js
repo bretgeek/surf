@@ -63,7 +63,7 @@
     parentContainer.addEventListener('mousemove', doDrag, true);
     let first = false;
  function dragStart(e) {
-      // here we don't set dragee to absolute until dragging begins
+      // here we don't set dragee position to relative or absolute until dragging begins
      if(e.target.classList.contains('surf-draggable')){
       const pos = Surf(e.target)._cs('position');
       // console.log(pos);
@@ -75,8 +75,8 @@
       }
       }
       if (e.type === 'touchstart') {
-        e.target.initialX = e.touches[0].clientX - dragee.xOffset;
-        e.target.initialY = e.touches[0].clientY - dragee.yOffset;
+        e.target.initialX = e.touches[0].clientX - e.target.xOffset;
+        e.target.initialY = e.touches[0].clientY - e.target.yOffset;
       } else {
         if (!first) { // for future use on first click/touch
           first = true;
