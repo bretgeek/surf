@@ -1096,8 +1096,19 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     speed = 300,
   } = {}) {
     for (const y of _stk) {
-      const vis = Surf()._cs(y, "visibility");
+      const vis = y.style.visibility;
+      const curopa= y.style.opacity;
+      // if there is any type of opacity set set it to 0 so we can fade in properly
+      //log(curopa)
+      if(Surf(y).isNumber(curopa) && curopa > 0){
+      Surf(y).css("opacity: 0;");
+      }
+      if(!Surf(y).isNumber(curopa)){
+      Surf(y).css("opacity: 0;");
+      }
 
+
+     //   log('vis is '+vis)
       if (vis === "hidden") {
         Surf(y).css("visibility: visible;");
       }
