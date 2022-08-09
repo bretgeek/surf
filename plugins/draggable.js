@@ -59,15 +59,18 @@
 
     parentContainer.addEventListener('mousedown', dragStart, true);
     parentContainer.addEventListener('mouseup', dragEnd, true);
-    containment.addEventListener('mouseleave', dragEnd, true);
+  //  containment.addEventListener('mouseleave', dragEnd, true);
     parentContainer.addEventListener('mousemove', doDrag, true);
     let first = false;
- function dragStart(e) {
+var curtarget ;
+let initialX = 0; 
+let  initialY = 0
+function dragStart(e) {
       // here we don't set dragee position to relative or absolute until dragging begins
      if(e.target.classList.contains('surf-draggable')){
-      const pos = Surf(e.target)._cs('position');
-      // console.log(pos);
-      // console.log(e.target.id);
+       curtarget = e.target;
+       curtarget.active = true;
+       const pos = Surf(e.target)._cs('position');
       if (pos !== 'relative') {
       if (pos === 'absolute') { // if it is already absolute then do nothing
       }else{
@@ -75,69 +78,65 @@
       }
       }
       if (e.type === 'touchstart') {
-        e.target.initialX = e.touches[0].clientX - e.target.xOffset;
-        e.target.initialY = e.touches[0].clientY - e.target.yOffset;
+        initialX = e.touches[0].clientX - e.target.xOffset;
+        initialY = e.touches[0].clientY - e.target.yOffset;
       } else {
         if (!first) { // for future use on first click/touch
           first = true;
-          e.target.initialX = e.clientX - e.target.xOffset;
-          e.target.initialY = e.clientY - e.target.yOffset;
+          initialX = e.clientX - e.target.xOffset;
+          initialY = e.clientY - e.target.yOffset;
         // console.log(e.target.xOffset);
         } else {
-          e.target.initialX = e.clientX - e.target.xOffset;
-          e.target.initialY = e.clientY - e.target.yOffset;
+          initialX = e.clientX - e.target.xOffset;
+          initialY = e.clientY - e.target.yOffset;
+          
         }
       }
 
       if (e.target.matches(draghandle) || !draghandle) {
         Surf(e.target).css('user-select: none; cursor: pointer;');
-        e.target.active = true;
+        curtarget.active = true;
       }
       setTranslate(e.target.currentX, e.target.currentY, e.target);
     }
     }
 
-    function dragEnd(e) {
-     if(e.target.classList.contains('surf-draggable')){
+    function dragEnd() {
       // console.log('etype '+e.type)
-      e.target.initialX = e.target.currentX;
-      e.target.initialY = e.target.currentY;
+      initialX = Surf(curtarget)._cs('left');
+      initialY = Surf(curtarget)._cs('top');
       if (dropEl && isTouching({el: dropEl}) && active) {
-        dropfn({dragee: e.target, dropee: dropEl} );
-        e.target.active = false;
+        dropfn({dragee: curtarget, dropee: dropEl} );
+        curtarget.active = false;
       }
-      e.target.active = false;
+      curtarget.active = false;
 
-      setTranslate(e.target.currentX, e.target.currentY, e.target);
-    }
+      setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
     }
 
- function doDrag(e) {
-     if(e.target.classList.contains('surf-draggable')){
-      if (e.target.active) {
+  function doDrag(e) {
         e.preventDefault();
-
+    if(curtarget && curtarget.active && curtarget.classList.contains('surf-draggable')){
         if (e.type === 'touchmove') {
-          e.target.currentX = e.touches[0].clientX - e.target.initialX;
-          e.target.currentY = e.touches[0].clientY - e.target.initialY;
+          curtarget.currentX = e.touches[0].clientX - initialX;
+          curtarget.currentY = e.touches[0].clientY - initialY;
         } else {
           // console.log('currentX '+currentX)
-          e.target.currentX = e.clientX - e.target.initialX;
-          e.target.currentY = e.clientY - e.target.initialY;
+          curtarget.currentX = e.clientX - initialX;
+          curtarget.currentY = e.clientY - initialY;
         }
 
         if (overEl && isTouching({el: overEl}) && Surf().isFunction(overfn) && active) {
-          overfn({dragee: e.target, dropee: overEl} );
+          overfn({dragee: curtarget, dropee: overEl} );
         }
 
 
-        e.target.xOffset = e.target.currentX;
-        e.target.yOffset = e.target.currentY;
+        curtarget.xOffset = curtarget.currentX;
+        curtarget.yOffset = curtarget.currentY;
 
-        setTranslate(e.target.currentX, e.target.currentY, e.target);
-      }
-    }
-    }
+        setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+     }
+   }
 
     function setTranslate(xPos, yPos, el) {
       // console.log('xPos '+xPos)
