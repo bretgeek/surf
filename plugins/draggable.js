@@ -6,8 +6,8 @@
 *   function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
 *@return {object}
 */
-//TODO set cursor if cursor is true
-  function drag({draghandle=false, cursor=false, contain='body', dropfn=false, drop=false, over=false, overfn=false, zIndex=1} = {} ) {
+// set cursor if cursor is true
+  function drag({draghandle=false, cursor=false, contain='body', containDistance = 2, dropfn=false, drop=false, over=false, overfn=false, zIndex=1} = {} ) {
 
   function isTouching({el=false, el2=false}) { // el2 is self if omitted
     if (typeof(el2) !== 'document') { // do not make el2 document! 
@@ -41,7 +41,11 @@
      dragee.initialY = dragee.inititalY || 0;
      dragee.xOffset = 0;
      dragee.yOffset = 0;
-    const containment = document.querySelectorAll(contain)[0];
+     dragee.containment = document.querySelector(contain);
+    //for debugging in dev tools
+    if(dragee.containment){
+     Surf(dragee).attr('data-surfcontain', contain);
+     }
     const parentContainer = dragee.parentNode || dragee.parentElement; // for dragEnd
     let dropEl;
     if (drop && isString(drop) ) {
@@ -59,18 +63,50 @@
 
     parentContainer.addEventListener('mousedown', dragStart, true);
     parentContainer.addEventListener('mouseup', dragEnd, true);
-  //  containment.addEventListener('mouseleave', dragEnd, true);
+    //parentContainer.parentNode.addEventListener('mouseup', dragEnd, true);
+    document.body.addEventListener('mouseup', dragEnd, true);
+
     parentContainer.addEventListener('mousemove', doDrag, true);
-    let first = false;
+
+let first = false;
 var curtarget ;
 let initialX = 0; 
 let  initialY = 0
+let z;
+
+//TODO check curtarget against these in doDrag and set curtarget.active to fals or just return to stop dragging
+
+
+let containRight = 0 ;
+let containLeft = 0;
+let containTop = 0;
+let containBottom = 0;
+let containHeight = 0;
+
+
+
 function dragStart(e) {
+
       // here we don't set dragee position to relative or absolute until dragging begins
      if(e.target.classList.contains('surf-draggable')){
+
        curtarget = e.target;
+
+      containLeft = Surf()._rect(curtarget.containment, 'left', true);
+      containRight = Surf()._rect(curtarget.containment, 'width', true)+containLeft;
+      containTop = Surf()._rect(curtarget.containment, 'top', true);
+      containBottom = Surf()._rect(curtarget.containment, 'height', true);
+      containHeight = Surf()._rect(curtarget.containment, 'height', true);
+      //console.log(`CR = ${containRight} `)
+      //console.log(`CL = ${containLeft} `)
+      //console.log(`CT = ${containTop} `)
+      //console.log(`CH = ${containHeight} `)
+      //console.log(`CB = ${containBottom} `)
+
+
+        z = curtarget.style.zIndex;
        curtarget.active = true;
-       const pos = Surf(e.target)._cs('position');
+       const pos = Surf()._cs(e.target, 'position');
       if (pos !== 'relative') {
       if (pos === 'absolute') { // if it is already absolute then do nothing
       }else{
@@ -85,6 +121,7 @@ function dragStart(e) {
           first = true;
           initialX = e.clientX - e.target.xOffset;
           initialY = e.clientY - e.target.yOffset;
+        curtarget.style.zIndex = 999;
         // console.log(e.target.xOffset);
         } else {
           initialX = e.clientX - e.target.xOffset;
@@ -101,22 +138,44 @@ function dragStart(e) {
     }
     }
 
-    function dragEnd() {
+/*
+// end dragging if on anything but curtarget 
+    function dragCheck(e) {
+   if(curtarget){
+   // TODO this currently allows draggable over other draggablse but we should allow over elements that are children on container
+   if(e.target !== curtarget && !e.target.classList.contains('surf-draggable')){
+      curtarget.active = false;
+   Surf(curtarget).trigger('mouseup')
+   }
+   }
+ }
+*/
+    function dragEnd(e) {
+
+   if(e.target !== curtarget ){
+      curtarget.active = false;
+   Surf(curtarget).trigger('mouseup')
+   }
+   try{
       // console.log('etype '+e.type)
-      initialX = Surf(curtarget)._cs('left');
-      initialY = Surf(curtarget)._cs('top');
+      initialX = Surf()._cs(curtarget, 'left');
+      initialY = Surf()._cs(curtarget, 'top');
       if (dropEl && isTouching({el: dropEl}) && active) {
         dropfn({dragee: curtarget, dropee: dropEl} );
         curtarget.active = false;
       }
       curtarget.active = false;
+      curtarget.style.zIndex = null
 
       setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+}catch(e){}
     }
 
   function doDrag(e) {
         e.preventDefault();
     if(curtarget && curtarget.active && curtarget.classList.contains('surf-draggable')){
+
+
         if (e.type === 'touchmove') {
           curtarget.currentX = e.touches[0].clientX - initialX;
           curtarget.currentY = e.touches[0].clientY - initialY;
@@ -131,12 +190,75 @@ function dragStart(e) {
         }
 
 
+
         curtarget.xOffset = curtarget.currentX;
+
+let curtargetLeft = Surf()._rect(curtarget, 'left', true);
+let curtargetWidth = Surf()._rect(curtarget, 'width', true);
+let curtargetRight = Surf()._rect(curtarget, 'left', true)+curtargetWidth;
+let curtargetHeight = Surf()._rect(curtarget, 'height', true);
+let curtargetTop = Surf()._rect(curtarget, 'y', true);//  - curtarget.offsetTop + (curtargetHeight*2) ;
+let curtargetBottom = Surf()._rect(curtarget, 'y', true)+curtargetHeight;//  - curtarget.offsetTop + (curtargetHeight*2) ;
+//console.log(curtargetTop)
+//console.log(curtargetRight)
+//console.log(containTop)
+//console.log(curtarget.offsetTop)
+//console.log(curtargetHeight)
+
+  // CONTAIN TOP
+  if(curtargetTop < containTop){
+    // console.log('hit top')
+    curtarget.yOffset = curtarget.currentY+containDistance;
+    Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')+containDistance}px;`);
+
+      }else{
+
         curtarget.yOffset = curtarget.currentY;
+      }
+
+  // CONTAIN BOTTOM
+  if(curtargetBottom  > containBottom+curtarget.containment.offsetTop ){
+    //console.log(curtarget.containment.offsetTop)
+    // console.log('hit bottom')
+    curtarget.yOffset = curtarget.currentY-containDistance;
+    Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')-containDistance}px;`);
+
+      }else{
+
+        curtarget.yOffset = curtarget.currentY;
+      }
+
+  // CONTAIN LEFT
+  if(curtargetLeft  < containLeft ){
+    //console.log(curtarget.containment.offsetTop)
+    // console.log('hit left')
+    curtarget.xOffset = curtarget.currentX+containDistance;
+    Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')+containDistance}px;`);
+
+      }else{
+
+        curtarget.xOffset = curtarget.currentX;
+      }
+
+  // CONTAIN RIGHT
+  if(curtargetRight  > containRight ){
+    //console.log(curtarget.containment.offsetTop)
+    // console.log('hit right')
+    curtarget.xOffset = curtarget.currentX-containDistance;
+    Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')-containDistance}px;`);
+
+      }else{
+
+        curtarget.xOffset = curtarget.currentX;
+      }
+
+
+
 
         setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
      }
    }
+
 
     function setTranslate(xPos, yPos, el) {
       // console.log('xPos '+xPos)
