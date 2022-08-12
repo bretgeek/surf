@@ -470,10 +470,6 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **appendTo** - Append elements or html strings to first element of param.
 
-* **show** - Show elements of stack.
-
-* **hide** - Hide elements of stack.
-
 * **parent** - PARENT for each element in the stack put each direct parent on the stack and subsequent chains will act on the parents - if You want to return the collection chain with ._ or .first or all() to return the first parent of the stack.
 
 * **parents** - Run fn against parents of elements on stack or that match matchsel param then push all found parents to new stack.

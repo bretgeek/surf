@@ -72,8 +72,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     prependTo: prependTo,
     forEvery: forEvery,
     each: each,
-    show: show,
-    hide: hide,
     detach: detach,
     fadeIn: fadeIn,
     fadeOut: fadeOut,
@@ -1444,55 +1442,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       }
       return this;
     }
-  }
-
-  /**
-   * show
-   * SHOW
-   * @description Show elements of stack.
-   * @return Object
-   */
-  function show({
-   display = "block",
-    forceDisplay = false,
-  } = {}) {
-    for (const y of _stk) {
-      const vis = Surf()._cs(y, "visibility");
-
-      if (vis === "hidden") {
-        Surf(y).css("visibility: visible;");
-      }
-      let newdisp = display;
-      if (forceDisplay) {
-        newdisp = display;
-      } else {
-        newdisp = y.saveDisp || display;
-      }
-      const disp = Surf()._cs(y, "display");
-      // log('display is '+display)
-      if (disp === "none" || forceDisplay) {
-        Surf(y).css(`display: ${newdisp};`);
-      }
-      
-        Surf(y).css(`opacity: 1;`);
-    }
-    return this;
-  }
-
-  /**
-   * hide
-   * HIDE
-   * @description
-   * @description Hide elements of stack.
-   * @return Object
-   */
-  function hide({ dtype = "none", op = 1, v = "hidden" } = {}) {
-    for (const y of _stk) {
-      y.style.visibility = v;
-      y.style.display = dtype;
-      y.style.opacity = op;
-    }
-    return this;
   }
 
   /**
