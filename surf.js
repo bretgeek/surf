@@ -46,6 +46,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     removeEvent: removeEvent,
     isFunction: isFunction,
     isNumber: isNumber,
+    isString: isString,
     isObject: isObject,
     isElement: isElement,
     isArray: isArray,
@@ -629,7 +630,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   function html(str = false, limit = "all") {
     // log(str)
     let res = "";
-    if (!str && limit === "all") {
+    if (!isString(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
         res += y.innerHTML;
@@ -648,7 +649,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    */
   function text(str, limit = "all") {
     let res = "";
-    if (!str && limit === "all") {
+    if (!isString(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
         res += y.textContent;
