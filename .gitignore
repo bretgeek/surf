@@ -10,6 +10,12 @@ imgs/favicon.bak
 imgs/li.png
 imgs/favicon.png
 imgs/surf.svg
+imgs/player.png
+imgs/player.xcf
+imgs/playerstand.png
+imgs/surfboard.png
+player.png
+playerl.png
 
 node_modules/
 package-lock.json
