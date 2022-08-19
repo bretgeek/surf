@@ -251,9 +251,10 @@ let curtargetBottom = Surf()._rect(curtarget, 'y', true)+curtargetHeight;//  - c
       }
 
   // CONTAIN BOTTOM
-  if(curtargetBottom  > containBottom+curtarget.containment.offsetTop ){
+   //console.log('bottom is '+ Number(containBottom)+curtarget.containment.offsetTop )
+  if(curtargetBottom  > Surf()._rect(curtarget.containment, 'y', true) + Surf()._rect(curtarget.containment, 'height', true)){
     //console.log(curtarget.containment.offsetTop)
-    // console.log('hit bottom')
+  //   console.log('hit bottom')
     curtarget.yOffset = curtarget.currentY-containDistance;
     Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')-containDistance}px;`);
 
