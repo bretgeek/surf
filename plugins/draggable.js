@@ -7,7 +7,7 @@
 *@return {object}
 */
 // set cursor if cursor is true
-  function drag({draghandle=false, cursor=false, contain='body', containDistance = 2, dropfn=false, drop=false, over=false, overfn=false, zIndex=1} = {} ) {
+  function drag({draghandle=false, cursor=false, contain='body', containDistance = 2, dropfn=false, drop=false, over=false, overfn=false, zIndex=1, axis=false} = {} ) {
 
   function isTouching({el=false, el2=false}) { // el2 is self if omitted
     if (typeof(el2) !== 'document') { // do not make el2 document! 
@@ -134,7 +134,24 @@ function dragStart(e) {
         Surf(e.target).css('user-select: none; cursor: pointer;');
         curtarget.active = true;
       }
-      setTranslate(e.target.currentX, e.target.currentY, e.target);
+//      setTranslate(e.target.currentX, e.target.currentY, e.target);
+
+if(axis){
+if(axis == 'y'){
+
+        setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
+}
+if(axis == 'x'){
+
+        setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
+}
+
+
+}else{
+        setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+}
+
+
     }
     }
 
@@ -167,7 +184,24 @@ function dragStart(e) {
       curtarget.active = false;
       curtarget.style.zIndex = null
 
-      setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+//      setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+
+if(axis){
+if(axis == 'y'){
+
+        setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
+}
+if(axis == 'x'){
+
+        setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
+}
+
+
+}else{
+        setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+}
+
+
 }catch(e){}
     }
 
@@ -254,8 +288,21 @@ let curtargetBottom = Surf()._rect(curtarget, 'y', true)+curtargetHeight;//  - c
 
 
 
+if(axis){
+if(axis == 'y'){
 
+        setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
+}
+if(axis == 'x'){
+
+        setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
+}
+
+
+}else{
         setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+}
+
      }
    }
 
