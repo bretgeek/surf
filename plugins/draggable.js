@@ -57,8 +57,12 @@
       overEl = document.querySelector(over);
     }
 
+
+
     parentContainer.addEventListener('touchstart', dragStart, {passive: false});
+    document.body.addEventListener('touchend', dragEnd, {passive: false});
     parentContainer.addEventListener('touchend', dragEnd, {passive: false});
+    parentContainer.addEventListener('touchleave', leave, {passive: false});
     parentContainer.addEventListener('touchmove', doDrag, {passive: false});
 
     parentContainer.addEventListener('mousedown', dragStart, true);
@@ -74,7 +78,6 @@ let initialX = 0;
 let  initialY = 0
 let z;
 
-//TODO check curtarget against these in doDrag and set curtarget.active to fals or just return to stop dragging
 
 
 let containRight = 0 ;
@@ -84,6 +87,10 @@ let containBottom = 0;
 let containHeight = 0;
 
 
+
+function leave(e) {
+curtarget.active = false;
+}
 
 function dragStart(e) {
 
@@ -169,11 +176,10 @@ if(axis == 'x'){
 */
     function dragEnd(e) {
 
+   try{
    if(e.target !== curtarget ){
       curtarget.active = false;
-   Surf(curtarget).trigger('mouseup')
    }
-   try{
       // console.log('etype '+e.type)
       initialX = Surf()._cs(curtarget, 'left');
       initialY = Surf()._cs(curtarget, 'top');
@@ -185,6 +191,7 @@ if(axis == 'x'){
       curtarget.style.zIndex = null
 
 //      setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
+
 
 if(axis){
 if(axis == 'y'){
@@ -211,12 +218,12 @@ if(axis == 'x'){
 
 
         if (e.type === 'touchmove') {
-          curtarget.currentX = e.touches[0].clientX - initialX;
-          curtarget.currentY = e.touches[0].clientY - initialY;
+          curtarget.currentX = Math.round(e.touches[0].clientX - initialX);
+          curtarget.currentY = Math.round(e.touches[0].clientY - initialY);
         } else {
           // console.log('currentX '+currentX)
-          curtarget.currentX = e.clientX - initialX;
-          curtarget.currentY = e.clientY - initialY;
+          curtarget.currentX = Math.round(e.clientX - initialX);
+          curtarget.currentY = Math.round(e.clientY - initialY);
         }
 
         if (overEl && isTouching({el: overEl}) && Surf().isFunction(overfn) && active) {
@@ -257,6 +264,8 @@ let curtargetBottom = Surf()._rect(curtarget, 'y', true)+curtargetHeight;//  - c
   //   console.log('hit bottom')
     curtarget.yOffset = curtarget.currentY-containDistance;
     Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')-containDistance}px;`);
+
+
 
       }else{
 
