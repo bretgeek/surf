@@ -1089,10 +1089,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description fade in an element with speed in milliseconds and an option display setting to end with.
    *@return {object}
    */
-  function fadeIn({
+  function fadeIn(speed=300, {
     display = "block",
     forceDisplay = false,
-    speed = 300,
   } = {}) {
     for (const y of _stk) {
       const vis = y.style.visibility;
