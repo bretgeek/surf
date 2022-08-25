@@ -1114,14 +1114,10 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       let newdisp = display;
       if (forceDisplay) {
         newdisp = display;
-      } else {
-        newdisp = y.saveDisp || display;
-      }
-      const disp = Surf()._cs(y, "display");
-      // log('display is '+display)
-      if (disp === "none" || forceDisplay) {
+      } 
+       
+        // defaults to block if display is not passed in
         Surf(y).css(`display: ${newdisp};`);
-      }
 
       // log('vis is '+vis)
 
@@ -1150,8 +1146,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   function fadeOut(speed = 300) {
     for (const y of _stk) {
       // start out visible;
-      const disp = Surf()._cs(y, "display");
-      y.saveDisp = disp;
       let opa = 1;
       const intv = window.requestInterval(function () {
         if (opa > 0.1) {
