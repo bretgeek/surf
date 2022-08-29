@@ -1662,8 +1662,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   }
 
   /**
-   * every
-   * EVERY
+   * each
+   * EACH
    * @description Run fn against every element in stack.
    * @return Object
    */
