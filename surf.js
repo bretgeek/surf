@@ -272,16 +272,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     }
   } // end Arr ...Arr
 
-
-  // Make everything in the _stk available on obj as $('.element')[0]  named indexed elements
-  if(_stk.length){
-    let i = 0;
-      _stk.forEach((y) => {
-        obj[i] = y;
-        i++;
-      });
-  }
-
   /* END THE STACK */
 
   /* START LIBRARY FUNCTIONS */
@@ -2079,6 +2069,16 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   }
 
   /* END INTERNAL METHODS / TOOLS for templates */
+
+  // Make everything in the _stk available on obj as $('.element')[0]  named indexed elements
+  if(_stk.length){
+    let i = 0;
+      _stk.forEach((y) => {
+        obj[i] = y;
+        i++;
+      });
+  }
+
 
   return obj;
 }
