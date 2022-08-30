@@ -1458,6 +1458,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       obj.first = _stk[0];
       // make stack unique  since elements could have the same parent
     }
+   restack();
     return this;
   }
 
@@ -1563,6 +1564,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       faux.remove();
     }
 
+   restack();
     return this;
   }
 
@@ -1619,6 +1621,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       obj.first = _stk[0];
       faux.remove();
     }
+   restack();
     return this;
   }
 
@@ -2068,16 +2071,40 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     }
   }
 
+
+
   /* END INTERNAL METHODS / TOOLS for templates */
 
-  // Make everything in the _stk available on obj as $('.element')[0]  named indexed elements
-  if(_stk.length){
-    let i = 0;
-      _stk.forEach((y) => {
-        obj[i] = y;
-        i++;
-      });
-  }
+
+  /**
+   * restack
+   * RESTACK
+   * @description  Make everything in the _stk available on obj as $('.element')[0]  named indexed elements. 
+   */
+   function restack(){
+     // first clear existing numeric keys from obj
+     let keys = Object.keys(obj);
+
+       for(let k of keys){
+         if(isNumber(k)){
+           delete obj[k];
+           // console.log(k)
+         }
+       }
+
+      if(_stk.length){
+        let i = 0;
+        _stk.forEach((y) => {
+           obj[i] = y;
+           i++;
+             });
+      }
+    }//end restack
+
+// must call for first run
+restack();
+
+
 
 
   return obj;
