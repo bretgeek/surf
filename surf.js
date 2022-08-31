@@ -1458,7 +1458,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       obj.first = _stk[0];
       // make stack unique  since elements could have the same parent
     }
-   restack();
+   _restack();
     return this;
   }
 
@@ -1564,7 +1564,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       faux.remove();
     }
 
-   restack();
+   _restack();
     return this;
   }
 
@@ -1621,7 +1621,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       obj.first = _stk[0];
       faux.remove();
     }
-   restack();
+   _restack();
     return this;
   }
 
@@ -2077,11 +2077,11 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
 
   /**
-   * restack
-   * RESTACK
-   * @description  Make everything in the _stk available on obj as $('.element')[0]  named indexed elements. 
+   * _restack
+   * _RESTACK
+   * @description  Internal function to make everything in the _stk available on obj as $('.element')[0]  named indexed elements. 
    */
-   function restack(){
+   function _restack(){
      // first clear existing numeric keys from obj
      let keys = Object.keys(obj);
 
@@ -2099,10 +2099,10 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
            i++;
              });
       }
-    }//end restack
+    }//end _restack
 
 // must call for first run
-restack();
+_restack();
 
 
 
