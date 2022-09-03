@@ -482,7 +482,7 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **grab** - Return either all or singular elements from stack to retain a reference usually by variable assignment.
 
-* **every** - Run fn against every element in stack.
+* **each** - Run fn against every element in stack.
 
 * **detach** - Remove elements of stack from DOM.
 
