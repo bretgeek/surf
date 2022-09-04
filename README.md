@@ -4,7 +4,7 @@
     
 [<img alt="Surf JS"  src="imgs/logo.png" />](https://surf.monster/imgs/logo.png)
 
-## An Insanely Small Plugin Extendable, Reactive Element Template Library With Optional Component Based Syntax That Can Double as JQuery Alternative.
+## An Insanely Small Plugin Extendable, Reactive Element Template Library With Optional Component Based Syntax That Can Double as a JQuery Alternative.
 
 
 
