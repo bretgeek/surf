@@ -31,6 +31,8 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 
 ### Where To Get It?
 **Get it from Github:** https://github.com/bretgeek/surf/   
+**Unminified:** https://surf.monster/js/surf.js   
+**Minified:** https://surf.monster/js/surf.min.js   
 
 **Visit:** https://surf.monster for updates and working examples..
 
