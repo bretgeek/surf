@@ -34,6 +34,7 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 
 **Unminified:** https://surf.monster/js/surf.js
 
+
 **Minified:** https://surf.monster/js/surf.min.js
  (right click save as)
 
