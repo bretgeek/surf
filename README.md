@@ -43,8 +43,7 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 
 ### Features
 
-* 
-**Super Small!** - currently at around  ~13KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~13KB minified (smaller if gzipped).
 
 
 * **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like  {{msg}}  and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
