@@ -144,16 +144,21 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
   // add everything from Surf.registered.list  (Surf.prototype) to obj
   for (const key in Surf.registered.list) {
-    obj[key] = obj[key] || Surf.registered.list[key]; // Overwrites existing obj keys! You won't get an error so if your reak Surf it's your fault!
+    obj[key] = obj[key] || Surf.registered.list[key]; // Overwrites existing obj keys! You won't get an error so if your freak Surf it's your fault!
   }
 
   /* ITR */
 
   // If a function is passed in as itr then it will run once the document is ready.
   if (isFunction(itr)) {
+   if(Surf.registered.list[itr.name]){
+    // console.log(itr.name)
+    return itr() 
+   }
     Surf(document).ready(itr);
     return this;
-  }
+   }
+
 
   if (itr) {
     // if itr is a collection
