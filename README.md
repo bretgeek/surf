@@ -250,7 +250,7 @@ To make sure our component works we will use **Surf JS's** "append" method to ad
 
 // create a reference to a component
 
-const abutton = $().buttonCounter();
+const abutton = $().buttonCounter(); // OR const abutton = $(buttonCounter);
 
 
 // Create a reference to the place we want to put our component
@@ -270,6 +270,8 @@ $(comp1).append(abutton);  // OR without a reference: $(comp1).append($().button
 ### See if it works!
 
 **You should now see a button with this text:**
+
+(check https://surf.monster for live demo)
 
 Count is: 0 
 
@@ -328,12 +330,12 @@ function containerBox(){
 
   // First way: Set a template to another component
 
-  $(node).set({ button: $().buttonCounter() });
+  $(node).set({ button: $().buttonCounter() }); // OR $(node).set({ button: $(buttonCounter) }); 
 
 
   // Second way: Use DOM manipulation methods to add a component to this component
 
-  $(node).prepend( $().buttonCounter() );
+  $(node).prepend( $().buttonCounter() ); // OR $(node).prepend( $(buttonCounter) );
 
   return node; // compontents must return an element
 }
@@ -351,8 +353,9 @@ Somewhere else in your kickoff script add:
 
 ```js
 
+// create a new instance  
 
-const abox = $().containerBox(); // create a new instance  
+const abox = $().containerBox(); // OR const abox = $(containerBox);
 
 $('#comp2').append(abox); // add to somewhere in the DOM OR with variable instance do $('#comp2').append($().containerBox());
 
@@ -364,6 +367,8 @@ $('#comp2').append(abox); // add to somewhere in the DOM OR with variable instan
 
 
 ** You should now see three components - 1 containerBox component containing 2 buttonCounter components!**
+
+(check https://surf.monster for live demo)
 
 Count is:0
 Count is: 0 
