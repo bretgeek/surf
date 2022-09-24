@@ -13,7 +13,7 @@
   */
 
 function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
-  // itr is things to iterate over. change start and end Template vars to use different templates
+  // itr is things to iterate over. 
 
   // First we need to do some setup before we can hit the narly waves.
 
@@ -45,6 +45,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     off: removeEvent,
     removeEvent: removeEvent,
     isFunction: isFunction,
+    isEmpty: isEmpty,
     isNumber: isNumber,
     isString: isString,
     isObject: isObject,
@@ -153,7 +154,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   if (isFunction(itr)) {
    if(Surf.registered.list[itr.name]){
     // console.log(itr.name)
-    return itr() 
+    return itr();
    }
     Surf(document).ready(itr);
     return this;
