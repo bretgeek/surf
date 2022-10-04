@@ -1065,7 +1065,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * in this scenario without calling a done and then calling another delay outside of this chain, the next delay will run 2000 + time later but with done the next delay runs at next delay time of caller
    * )
    */
-  function delay({ time = 500, fn = () => {}, done = false } = {}) {
+  // This is essentially just a timeout that runs functions ever "time" so see below for delay that adds iterations
+  /*
+  function olddelay({ time = 500, fn = () => {}, done = false } = {}) {
     // if there is no stk because delay was called with Surf().delay then create a dummy node
     let dummy = false;
     if (!_stk.length) {
@@ -1088,6 +1090,61 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
     return this;
   }
+*/
+
+
+// New delay with iteratations - Note: unlike Jquery there is no queue, therfore chaining calls to delay will potentially cause delay run simulataneously hence do all your delay functions (fn) with iterations. If you need new behaivior write your fns to account for that based off of the iteration you are on.
+
+// Example: $().delay({time: 1000, itr: 3, fn: ()=> {   console.log('I ill run every second for 3 times ' )  } });
+// OR: to get the iterator and element - $().delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } })
+
+
+
+function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
+window.animcancel = window.animcancel || {};
+// if no element passed in create a dummy
+let dum = false ;
+if(_stk.length == 0){
+let dum = Surf().createNode('div');
+_stk.push(dum)
+}
+let inc = 0
+for(const y of _stk){
+  for( let i = 1; i <= itr; i++){
+    let ntime = time  * i || time; // delay time to execute consecutively - default to time in case itr is sent in as 0 and result of equation is 0 so it defaults to time
+let inv;
+inv = window.requestInterval( function() {
+// run until cancel flag is truthy  - so send in a string name here to keep unique
+if(!window.animcancel[cancel]){
+inc++;
+let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
+//console.log(ntime+' frame '+inc++)
+f(y);
+inv.clear();
+}else{
+inv.clear();
+return;
+}
+}, ntime);
+
+}// end for
+} // end stk for
+if(dum){
+dum.remove()
+}
+return this
+}
+
+
+
+
+
+
+
+
+
+
+
 
   /**
    * fadein
