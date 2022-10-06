@@ -1100,40 +1100,40 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
 
 
-function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
-window.animcancel = window.animcancel || {};
-// if no element passed in create a dummy
-let dum = false ;
-if(_stk.length == 0){
-let dum = Surf().createNode('div');
-_stk.push(dum)
-}
-let inc = 0
-for(const y of _stk){
-  for( let i = 1; i <= itr; i++){
-    let ntime = time  * i || time; // delay time to execute consecutively - default to time in case itr is sent in as 0 and result of equation is 0 so it defaults to time
-let inv;
-inv = window.requestInterval( function() {
-// run until cancel flag is truthy  - so send in a string name here to keep unique
-if(!window.animcancel[cancel]){
-inc++;
-let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
-//console.log(ntime+' frame '+inc++)
-f(y);
-inv.clear();
-}else{
-inv.clear();
-return;
-}
-}, ntime);
+  function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
+    window.animcancel = window.animcancel || {};
+    // if no element passed in create a dummy
+    let dum = false ;
+    if(_stk.length == 0){
+      let dum = Surf().createNode('div');
+      _stk.push(dum)
+    }
+    let inc = 0
+    for(const y of _stk){
+      for( let i = 1; i <= itr; i++){
+        let ntime = time  * i || time; // delay time to execute consecutively - default to time in case itr is sent in as 0 and result of equation is 0 so it defaults to time
+      let inv;
+      inv = window.requestInterval( function() {
+      // run until cancel flag is truthy  - so send in a string name here to keep unique
+      if(!window.animcancel[cancel]){
+        inc++;
+        let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
+        //console.log(ntime+' frame '+inc++)
+        f(y);
+        inv.clear();
+      }else{
+        inv.clear();
+        return;
+      }
+      }, ntime);
 
-}// end for
-} // end stk for
-if(dum){
-dum.remove()
-}
-return this
-}
+      }// end for
+    } // end stk for
+  if(dum){
+    dum.remove()
+  }
+  return this
+  }
 
 
 
