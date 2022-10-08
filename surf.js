@@ -1053,6 +1053,32 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     };
   };
 
+
+
+  /**
+   * runq
+   * RUNQ
+   * @description Run the delay queue - i.e. run all queued functions in individual elements.q delay array.
+  */  
+  function runq(el){
+    // console.log('el.len = '+ el.q.length)
+
+    // if a subsequent cancel request comes in clear the q
+    if(el.cancel){
+      el.cancel = true;
+      el.q = [];
+    return;
+    }
+
+    if(!el.qisrun){
+      if(el.q.length){
+        el.qisrun = true;
+        el.q[0]();
+      }
+    }
+ }
+
+
   /**
    * delay
    * DELAY
@@ -1093,15 +1119,23 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 */
 
 
-// New delay with iteratations - Note: unlike Jquery there is no queue, therfore chaining calls to delay will potentially cause delay run simulataneously hence do all your delay functions (fn) with iterations. If you need new behaivior write your fns to account for that based off of the iteration you are on.
+// New delay with iteratations and queue.
 
-// Example: $().delay({time: 1000, itr: 3, fn: ()=> {   console.log('I ill run every second for 3 times ' )  } });
+// Iteration Example: $().delay({time: 1000, itr: 3, fn: ()=> {   console.log('I ill run every second for 3 times ' )  } });
 // OR: to get the iterator and element - $().delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } })
 
+// USING THE DELAY QUEUE
+
+// If a delay fn sets cancel , delay will cancel future calls within a chain after first run of delay that is called. If delay is cancelled in the chain then delay queue will empty and die after first run of first chained delay
+
+// Example: - runs until after first iteration of second delay because fn calls delay with a cancel flag
+// $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } })
+
+// Example: uns first delay once despite what second call to delay does because delay is canclled on the chain
+// $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
 
 
   function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
-    window.animcancel = window.animcancel || {};
     // if no element passed in create a dummy
     let dum = false ;
     if(_stk.length == 0){
@@ -1110,27 +1144,43 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     }
     let inc = 0
     for(const y of _stk){
-      for( let i = 1; i <= itr; i++){
-        let ntime = time  * i || time; // delay time to execute consecutively - default to time in case itr is sent in as 0 and result of equation is 0 so it defaults to time
-      let inv;
-      inv = window.requestInterval( function() {
-      // run until cancel flag is truthy  - so send in a string name here to keep unique
-      if(!window.animcancel[cancel]){
-        inc++;
-        let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
-        //console.log(ntime+' frame '+inc++)
-        f(y);
-        inv.clear();
-      }else{
-        inv.clear();
-        return;
-      }
-      }, ntime);
+      y.q = y.q || [];
+      y.qisrun = y.qisrun || false;
+
+     // If a subsequent cancel request comes in clear the q
+       if(cancel){
+         y.cancel = true;
+       }
+   for( let i = 1; i <= itr; i++){
+    
+    if(!cancel){ 
+      y.q.push(
+        () => {    
+          let inv;
+            inv = window.requestInterval( function() {
+              // run until cancel flag is truthy  - so send in a string name here to keep unique
+              inc++;
+                let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
+                  f(y);
+                  y.qisrun = false;
+                  y.q.shift();
+                  runq(y);
+                  inv.clear();
+                  }, time);
+
+              }
+      );// end q.push
+   }
+
+
+    if(!y.qisrun){
+     runq(y);
+    }
 
       }// end for
     } // end stk for
   if(dum){
-    dum.remove()
+    dum.remove();
   }
   return this
   }
@@ -1140,10 +1190,30 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
 
 
+/*
 
+   // * NOTE For more precise effects use DELAY with iterations!
 
+     //EXAMPLE  fade in and out using delay to ensure one finishes before the other starts.
+  function fd(e,i){
+    if(i < 10){
+      $(e).css(`opacity: 0.${i};`);
+    }else{
+      $(e).css(`opacity: 1;`);
+     }
+   }
 
+  function fdout(e,i){
+    let op = e.style.opacity;
+    op = op - 0.1;
+   $(e).css(`opacity: ${op};`);
+  }
 
+  $('.logo').css('opacity: 0;');
+
+  $('.logo').delay({time: 500, itr: 10, fn: fd}).delay({time: 500, itr: 10, fn: fdout })
+
+*/
 
 
   /**
