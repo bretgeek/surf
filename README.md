@@ -456,7 +456,7 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **requestInterval** - Replacement for setInterval for smooth animations.
 
-* **delay** - Execute function for every element in _stk after a delay.
+* **delay** - Execute function for every element in _stk after a delay with optional iterations.
 
 * **fadein** - fade in an element with speed in milliseconds and an option display setting to end with.
 
