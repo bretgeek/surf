@@ -1085,55 +1085,22 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description Execute function for every element in _stk after a delay.
    * @return {object}
    * @usage
-   * Delays are applied to the stack and subsequent delays in the chain or in another chain will run
-   * when in sequence until delay encounters a done options
-   * $('.app').delay({time: 1000, fn: Counter}).delay({time: 1000, fn: Counter}).delay({time: 10, done: true})
-   * in this scenario without calling a done and then calling another delay outside of this chain, the next delay will run 2000 + time later but with done the next delay runs at next delay time of caller
-   * )
+
+   New delay with iteratations and queue.
+
+   Iteration Example: $().delay({time: 1000, itr: 3, fn: ()=> {   console.log('I ill run every second for 3 times ' )  } });
+   OR: to get the iterator and element - $().delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } })
+
+   USING THE DELAY QUEUE
+
+   If a delay fn sets cancel , delay will cancel future calls within a chain after first run of delay that is called. If delay is cancelled in the chain then delay queue will empty and die after first run of first chained delay
+
+   Example: - runs until after first iteration of second delay because fn calls delay with a cancel flag
+   $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } })
+
+   Example: uns first delay once despite what second call to delay does because delay is canclled on the chain
+   $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
    */
-  // This is essentially just a timeout that runs functions ever "time" so see below for delay that adds iterations
-  /*
-  function olddelay({ time = 500, fn = () => {}, done = false } = {}) {
-    // if there is no stk because delay was called with Surf().delay then create a dummy node
-    let dummy = false;
-    if (!_stk.length) {
-      dummy = Surf().createNode("div");
-      _stk.push(dummy);
-    }
-    for (const y of _stk) {
-      y.delayTime = y.delayTime + time || time;
-      let intv = window.requestInterval(function () {
-        fn(y);
-        if (done) {
-          y.delayTime = 0;
-        }
-        intv.clear();
-        if (dummy) {
-          Surf(dummy).detach();
-        }
-      }, y.delayTime);
-    }
-
-    return this;
-  }
-*/
-
-
-// New delay with iteratations and queue.
-
-// Iteration Example: $().delay({time: 1000, itr: 3, fn: ()=> {   console.log('I ill run every second for 3 times ' )  } });
-// OR: to get the iterator and element - $().delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } })
-
-// USING THE DELAY QUEUE
-
-// If a delay fn sets cancel , delay will cancel future calls within a chain after first run of delay that is called. If delay is cancelled in the chain then delay queue will empty and die after first run of first chained delay
-
-// Example: - runs until after first iteration of second delay because fn calls delay with a cancel flag
-// $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } })
-
-// Example: uns first delay once despite what second call to delay does because delay is canclled on the chain
-// $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
-
 
   function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
     // if no element passed in create a dummy
@@ -1190,7 +1157,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
 
 
-/*
+   /*
 
    // * NOTE For more precise effects use DELAY with iterations!
 
@@ -1213,7 +1180,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
   $('.logo').delay({time: 500, itr: 10, fn: fd}).delay({time: 500, itr: 10, fn: fdout })
 
-*/
+  // OR use effects within delay fns 
+
+   */
 
 
   /**
