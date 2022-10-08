@@ -1102,7 +1102,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
    */
 
-  function delay({time = 300, itr = 1, fn= ()=>{ }, cancel=false } = {}  ){
+  function delay({time = 300, itr = 1, infinity=false, endTime=false, fn= ()=>{ }, cancel=false } = {}  ){
     // if no element passed in create a dummy
     let dum = false ;
     if(_stk.length == 0){
@@ -1113,6 +1113,28 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     for(const y of _stk){
       y.q = y.q || [];
       y.qisrun = y.qisrun || false;
+
+      //i an endTime passed in will caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
+      if(isNumber(endTime)){
+        infinity = false;// no infinity while using endTime
+        // calculate iterations based on endTime 
+        if(endTime < time){ // endTime must be >= time
+          endTime = time;
+        }
+        let newitr = Math.round(endTime / time);
+        if(newitr < 1){
+          itr = 1;
+        }else{
+          itr = newitr
+             }
+      }
+  
+       if(infinity){
+       itr = 1;
+       }
+
+     
+
 
      // If a subsequent cancel request comes in clear the q
        if(cancel){
@@ -1130,7 +1152,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
                 let f = function(y) { fn(y,i,inc)    }; // i is iterator passed to fn - use 3rd param inc for total times ran.
                   f(y,i,inc);
                   y.qisrun = false;
+                  if(!infinity){
                   y.q.shift();
+                   }
                   runq(y);
                   inv.clear();
                   }, time);
