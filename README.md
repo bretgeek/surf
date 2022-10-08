@@ -462,7 +462,7 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **fadeOut** - fade out an element with speed in milliseconds and an option display setting to end with.
 
-* ** classToggle** - Toggle class (add or remove) on elements of stack.
+* **classToggle** - Toggle class (add or remove) on elements of stack.
 
 * **toggle** - Toggle visibility of elements on stack.
 
