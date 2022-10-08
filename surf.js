@@ -1127,8 +1127,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
             inv = window.requestInterval( function() {
               // run until cancel flag is truthy  - so send in a string name here to keep unique
               inc++;
-                let f = function(y) { fn(y,inc)    }; // inc is iterator because it's how many time this was ran.
-                  f(y);
+                let f = function(y) { fn(y,i,inc)    }; // i is iterator passed to fn - use 3rd param inc for total times ran.
+                  f(y,i,inc);
                   y.qisrun = false;
                   y.q.shift();
                   runq(y);
