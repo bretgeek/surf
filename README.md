@@ -13,7 +13,7 @@
 
 **Surf JS** is a few different things all wrapped up in one small package.
 
-It's small ~13kb plugin extendable JavaScript utility library AND component library for building user interfaces (UI).
+It's an insanely small ~13kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
 But it's also a super small JQuery clone/replacement library that has **reactive element templates** (read on to learn what these are).
