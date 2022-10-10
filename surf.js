@@ -33,6 +33,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     clone: clone,
     wrap: wrap,
     hidekbd: hidekbd,
+    onFrame: onFrame,
     css: css,
     data: data,
     domDelay: 100,
@@ -1080,6 +1081,25 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       }
     }
  }
+
+
+
+  /**
+   * onFrame
+   * onFrame
+   * @description Execute function on frame number when using fps with delay.
+   * @return {object}
+  */
+   function onFrame(frame, fn){
+     for(const y of _stk){
+       if(isFunction(fn)){
+         if(y.frame == frame){
+           fn();
+         }
+       }
+     }  
+return this
+   } 
 
 
   /**
