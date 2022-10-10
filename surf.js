@@ -79,6 +79,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     fadeOut: fadeOut,
     ready: ready,
     delay: delay,
+    animate: delay,
     trigger: trigger,
     find: find,
     children: children,

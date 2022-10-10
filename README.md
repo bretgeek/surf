@@ -59,7 +59,7 @@ A good way to think about **Surf JS** is that it's like JQuery if JQuery had a w
 
 * **Extendable** - Highly configurable (you can change anything you want about the base functionality with a run time config) and it's extendable with plugins.
 
-* **A Delay Queue** - An iteratable and cancellable delay queue for building custom effects and animations.
+* **A Delay/Animation Queue** - An iteratable and cancellable delay queue for building custom effects and animations.
 
 * **Versatile** - It's intended to give you power and not lock you down into any one way of doing things. You can probably find ways to use it that the author has not even thought of yet. Use it in ways that you and your team define!
 
