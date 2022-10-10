@@ -1102,7 +1102,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
    */
 
-  function delay({time = 300, itr = 1, infinity=false, endTime=false, fn= ()=>{ }, cancel=false } = {}  ){
+  function delay({time = 300, itr = 1, infinity=false, fps=false, endTime=false, fn= ()=>{ }, cancel=false } = {}  ){
+
     // if no element passed in create a dummy
     let dum = false ;
     if(_stk.length == 0){
@@ -1114,7 +1115,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       y.q = y.q || [];
       y.qisrun = y.qisrun || false;
 
-      //i an endTime passed in will caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
+      // If an endTime passed in (with no fps) caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
       if(isNumber(endTime)){
         infinity = false;// no infinity while using endTime
         // calculate iterations based on endTime 
@@ -1133,7 +1134,24 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
        itr = 1;
        }
 
-     
+
+
+    // FPS and FPS with endTime  
+    // exampless : $('#app').delay({ fps: 24, endTime: 2000, fn: (e,i,inc)=> {   console.log('foo'+inc )  } });
+    // OR:  $('#app2').delay({ fps: 24, endTime: 5000, fn: (e,i,inc)=> {   console.log('foo 2 '+inc )  } }); 
+    // Using fps - if fps is passed in means this delay call will run until cancelled fps (N frames per second)
+    if(isNumber(fps)){
+      infinity = true; 
+      time = Math.round(1000/fps);
+      itr = 1;
+       // If endTime is used with fps then cancel after endTime
+      if(isNumber(endTime)){
+       // Cancel and clear queue after endTime 
+       let et = setInterval(() => { Surf(y).delay({cancel: true, fps: false, endTime: false}); clearInterval(et)}, endTime);
+       }
+    }
+
+    
 
 
      // If a subsequent cancel request comes in clear the q
