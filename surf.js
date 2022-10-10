@@ -1075,6 +1075,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       if(el.q.length){
         el.qisrun = true;
         el.q[0]();
+        // frame number is only useful when using fps and can be accessed on element.frame
+        el.frame = el.frame + 1 || 1;
       }
     }
  }
