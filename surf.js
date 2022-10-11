@@ -1062,7 +1062,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * RUNQ
    * @description Run the delay queue - i.e. run all queued functions in individual elements.q delay array.
   */  
-  function runq(el){
+  function runq(el, done){
     // console.log('el.len = '+ el.q.length)
 
     // if a subsequent cancel request comes in clear the q
@@ -1070,6 +1070,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
      //  console.log('cancelled')
       el.cancel = false; // so next calls to delay can run
       el.q = [];
+      if(isFunction(done)){
+       done();
+      }
     return;
     }
 
@@ -1077,8 +1080,17 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       if(el.q.length){
         el.qisrun = true;
         el.q[0]();
-        // frame number is only useful when using fps and can be accessed on element.frame
+      
+      }
+
+         // frame number is only useful when using fps and can be accessed on element.frame
         el.frame = el.frame + 1 || 1;
+
+ 
+      if(el.q.length == 0){
+      if(isFunction(done)){
+      done();
+      }
       }
     }
  }
@@ -1126,7 +1138,7 @@ return this
    $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
    */
 
-  function delay({time = 300, itr = 1, infinity=false, fps=false, endTime=false, fn= ()=>{ }, cancel=false } = {}  ){
+  function delay({time = 300, itr = 1, infinity=false, fps=false, endTime=false, fn = ()=>{ }, done = false, cancel=false } = {}  ){
 
     // if no element passed in create a dummy
     let dum = false ;
@@ -1182,7 +1194,7 @@ return this
      // If a subsequent cancel request comes in clear the q
        if(cancel){
          y.cancel = true;
-             runq(y);
+             runq(y, done);
        }
    for( let i = 1; i <= itr; i++){
     
@@ -1199,7 +1211,7 @@ return this
                   if(!infinity){
                   y.q.shift();
                    }
-                  runq(y);
+                  runq(y, done);
                   inv.clear();
                   }, time);
 
@@ -1209,7 +1221,7 @@ return this
 
 
     if(!y.qisrun){
-     runq(y);
+     runq(y, done);
     }
 
       }// end for
