@@ -1071,7 +1071,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
       el.cancel = false; // so next calls to delay can run
       el.q = [];
       if(isFunction(done)){
-       done();
+       done(el);
       }
     return;
     }
@@ -1088,8 +1088,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
 
  
       if(el.q.length == 0){
+      el.frame = 1;
       if(isFunction(done)){
-      done();
+      done(el);
       }
       }
     }
@@ -1149,7 +1150,6 @@ return this
     let inc = 0
     for(const y of _stk){
       y.q = y.q || [];
-      y.frame = 0;
       y.qisrun = y.qisrun || false;
 
       // If an endTime passed in (with no fps) caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
@@ -1194,7 +1194,7 @@ return this
      // If a subsequent cancel request comes in clear the q
        if(cancel){
          y.cancel = true;
-             runq(y, done);
+         runq(y, done);
        }
    for( let i = 1; i <= itr; i++){
     
