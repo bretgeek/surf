@@ -80,6 +80,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     fadeOut: fadeOut,
     ready: ready,
     delay: delay,
+    applyEase: applyEase,
     animate: delay,
     trigger: trigger,
     find: find,
@@ -1233,6 +1234,383 @@ return this
   }
 
 
+   /**
+   * applyEase
+   * APPLYEASE
+   * @description Easing utility function
+   * @return {number}
+   */
+
+    /*
+    // EXAMPLE USAGE
+     function ez(e){
+       let flux = $().applyEase(e, {ease: 'bow', time: 1700});// up or lower time for different speeds of effect
+       $(e).css(`position: relative; left:  ${ 1 + Math.round(flux * 100)}px; `)
+     }
+
+     let logo = $('.logo')[0];
+     $(logo).delay({ time: 10, itr: 100, done: stagedone,  fn: ez });
+     */
+   
+   function applyEase(e, { ease='backInOut', time=1000}={}){
+     //console.log(e)
+     let easer = getEase(ease);
+     let curtime = performance.now();
+     let start = e.start || performance.now();
+     e.start = e.start || start
+     let timeFraction = (curtime - e.start) / time;
+        if (timeFraction > 1) {
+          e.start = performance.now();
+          timeFraction = 1;
+        }
+     let flux = easer(timeFraction);
+        //console.log('flux '+flux);
+      
+
+       /**
+       * getEase
+       * @description Easing utility function
+       * @return {number}
+       */
+      function getEase(str) {
+        const ease = {
+          quad: quad,
+          quadIn: quadIn,
+          linear: linear,
+          bounceOut: bounceOut,
+          bounceInOut: bounceInOut,
+          bounceIn: bounce,
+          quadOut: quadOut,
+          quadInOut: quadInOut,
+          quinticIn: quinticIn,
+          quinticOut: quinticOut,
+          quinticInOut: quinticInOut,
+          exponentialIn: exponentialIn,
+          exponentialOut: exponentialOut,
+          exponentialInOut: exponentialInOut,
+          elasticInOut: elasticInOut,
+          elasticIn: elasticIn,
+          elasticOut: elasticOut,
+          cubic: cubic,
+          circularIn: circularIn,
+          circularOut: circularOut,
+          circularInOut: circularInOut,
+          backIn: backIn,
+          backOut: backOut,
+          backInOut: backInOut,
+          bow: bow.bind(null, 5.5),
+        };
+
+        return ease[str] || linear;
+      } //end getEase
+
+       /**
+       * quad
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quad(timeFraction) {
+        return Math.pow(timeFraction, 2);
+      }
+       /**
+       * makeEaseOut
+       * @description Easing utility function
+       * @return {number}
+       */       
+      function makeEaseOut(timing) {
+        return function (amt) {
+          return 1 - timing(1 - amt);
+        };
+      }
+
+       /**
+       * bounce
+       * @description Easing utility function
+       * @return {number}
+       */
+      function bounce(amt) {
+        /* eslint-disable */ 
+        for (let a = 0, b = 1; 1; a += b, b /= 2) {
+          if (amt >= (7 - 4 * a) / 11) {
+            return -Math.pow((11 - 6 * a - 11 * amt) / 4, 2) + Math.pow(b, 2);
+          }
+        }
+        /* eslint-enable */ 
+      }
+
+      var bounceOut = makeEaseOut(bounce);// must hoist
+
+       /**
+       * makeEaseInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function makeEaseInOut(timing) {
+        return function (amt) {
+          if (amt < 0.5) {
+            return timing(2 * amt) / 2;
+          } else {
+            return (2 - timing(2 * (1 - amt))) / 2;
+          }
+        };
+      }
+
+      var bounceInOut = makeEaseInOut(bounce);
+
+      /**
+       * bow
+       * @description Easing utility function
+       * @return {number}
+       */
+      function bow(x, amt) {
+        return Math.pow(amt, 2) * ((x + 1) * amt - x);
+      }
+
+      /**
+       * cubic
+       * @description Easing utility function
+       * @return {number}
+       */
+      function cubic(amt) {
+        return Math.pow(amt, 5);
+      }
+
+      /**
+       * quadIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quadIn(amt) {
+        return amt * amt;
+      }
+
+   /**
+       * quadOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quadOut(amt) {
+        return amt * (2 - amt);
+      }
+
+    /**
+       * quadInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quadInOut(amt) {
+        if ((amt *= 2) < 1) {
+          return 0.5 * amt * amt;
+        }
+        return -0.5 * (--amt * (amt - 2) - 1);
+      }
+
+      /**
+       * exponentialIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function exponentialIn(amt) {
+        return amt === 0 ? 0 : Math.pow(1024, amt - 1);
+      }
+
+      /**
+       * exponentialOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function exponentialOut(amt) {
+        return amt === 1 ? 1 : 1 - Math.pow(2, -10 * amt);
+      }
+ /**
+       * exponentialInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function exponentialInOut(amt) {
+        if (amt === 0) {
+          return 0;
+        }
+        if (amt === 1) {
+          return 1;
+        }
+
+        if ((amt *= 2) < 1) {
+          return 0.5 * Math.pow(1024, amt - 1);
+        }
+        return 0.5 * (-Math.pow(2, -10 * (amt - 1)) + 2);
+      }
+
+      /**
+       * elasticOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function elasticOut(amt) {
+        if (amt === 0) {
+          return 0;
+        }
+
+        if (amt === 1) {
+          return 1;
+        }
+        return Math.pow(2, -10 * amt) * Math.sin((amt - 0.1) * 5 * Math.PI) + 1;
+      }
+
+      /**
+       * elasticIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function elasticIn(amt) {
+        if (amt === 0) {
+          return 0;
+        }
+        if (amt === 1) {
+          return 1;
+        }
+
+        return (
+          -Math.pow(2, 10 * (amt - 1)) * Math.sin((amt - 1.1) * 5 * Math.PI)
+        );
+      }
+
+     /**
+       * elasticInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function elasticInOut(amt) {
+        if (amt === 0) {
+          return 0;
+        }
+
+        if (amt === 1) {
+          return 1;
+        }
+
+        amt *= 2;
+        if (amt < 1) {
+          return (
+            -0.5 *
+            Math.pow(2, 10 * (amt - 1)) *
+            Math.sin((amt - 1.1) * 5 * Math.PI)
+          );
+        }
+
+        return (
+          0.5 *
+            Math.pow(2, -10 * (amt - 1)) *
+            Math.sin((amt - 1.1) * 5 * Math.PI) +
+          1
+        );
+      }
+
+      /**
+       * backIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function backIn(amt) {
+        const s = 1.70158;
+        return amt === 1 ? 1 : amt * amt * ((s + 1) * amt - s);
+      }
+
+ /**
+       * backOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function backOut(amt) {
+        const s = 1.70158;
+        return amt === 0 ? 0 : --amt * amt * ((s + 1) * amt + s) + 1;
+      }
+
+      /**
+       * backInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function backInOut(amt) {
+        const s = 1.70158 * 1.525;
+        if ((amt *= 2) < 1) {
+          return 0.5 * (amt * amt * ((s + 1) * amt - s));
+        }
+        return 0.5 * ((amt -= 2) * amt * ((s + 1) * amt + s) + 2);
+      }
+
+      /**
+       * circularIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function circularIn(amt) {
+        return 1 - Math.sqrt(1 - amt * amt);
+      }
+
+      /**
+       * circularOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function circularOut(amt) {
+        return Math.sqrt(1 - --amt * amt);
+      }
+ /**
+       * circularInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function circularInOut(amt) {
+        if ((amt *= 2) < 1) {
+          return -0.5 * (Math.sqrt(1 - amt * amt) - 1);
+        }
+        return 0.5 * (Math.sqrt(1 - (amt -= 2) * amt) + 1);
+      }
+
+      /**
+       * quinticIn
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quinticIn(amt) {
+        return amt * amt * amt * amt * amt;
+      }
+
+      /**
+       * quinticOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quinticOut(amt) {
+        return --amt * amt * amt * amt * amt + 1;
+      }
+
+      /**
+       * quinticInOut
+       * @description Easing utility function
+       * @return {number}
+       */
+      function quinticInOut(amt) {
+        if ((amt *= 2) < 1) {
+          return 0.5 * amt * amt * amt * amt * amt;
+        }
+        return 0.5 * ((amt -= 2) * amt * amt * amt * amt + 2);
+      }
+
+
+      /**
+       * linear
+       * @description Easing utility function
+       * @return {number}
+       */
+ 
+    function linear(amt) {
+        return amt;
+      }
+
+  return flux;
+  } // end applyEase
 
 
 
