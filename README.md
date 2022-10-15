@@ -14,19 +14,6 @@
 **Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
-It's also a small JQuery clone/replacement library that has **reactive element templates** (read on to learn what these are).
-
-
-
-**Surf JS** lets you build your component based UI using a familiar syntax and NO JSX! Using **Surf JS** as you would JQuery (in a non component based way) is entirely **optional**!
-
- **Surf JS** doesn't implement all JQuery methods but the basics are pretty similar and you can always configure **Surf JS** to do anything you want via plugins.
-
-
-
-
-A good way to think about what **Surf JS** is, is that it's like JQuery if JQuery had a way to use components **AND** if JQuery had reactive element templates...with a much smaller footprint than JQuery.
-
 
 ### Where To Get It?
 **Get it from Github:** https://github.com/bretgeek/surf/   
