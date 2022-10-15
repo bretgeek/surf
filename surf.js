@@ -1244,7 +1244,8 @@ return this
     /*
     // EXAMPLE USAGE
      function ez(e){
-       let flux = $().applyEase(e, {ease: 'bow', time: 1700});// up or lower time for different speeds of effect
+       let flux = $().applyEase(e, {ease: 'bow', time: 1700}); // raise or lower time for different speeds of effect - the higher the number the slower it moves
+
        $(e).css(`position: relative; left:  ${ 1 + Math.round(flux * 100)}px; `)
      }
 
@@ -1252,13 +1253,13 @@ return this
      $(logo).delay({ time: 10, itr: 100, done: stagedone,  fn: ez });
      */
    
-   function applyEase(e, { ease='backInOut', time=1000}={}){
+   function applyEase(e, { ease='backInOut', speed=1000}={}){
      //console.log(e)
      let easer = getEase(ease);
      let curtime = performance.now();
      let start = e.start || performance.now();
      e.start = e.start || start
-     let timeFraction = (curtime - e.start) / time;
+     let timeFraction = (curtime - e.start) / speed;
         if (timeFraction > 1) {
           e.start = performance.now();
           timeFraction = 1;
@@ -1283,6 +1284,7 @@ return this
           quadOut: quadOut,
           quadInOut: quadInOut,
           quinticIn: quinticIn,
+          easeOutBounce: easeOutBounce,
           quinticOut: quinticOut,
           quinticInOut: quinticInOut,
           exponentialIn: exponentialIn,
@@ -1312,6 +1314,35 @@ return this
       function quad(timeFraction) {
         return Math.pow(timeFraction, 2);
       }
+
+
+
+
+       /**
+       * easeOutBounce
+       * @description Easing utility function
+       * @return {number}
+       * https://easings.net/
+       */
+      function easeOutBounce(timeFraction) {
+        //return Math.pow(timeFraction, 2);
+        let x = timeFraction
+          const n1 = 7.5625;
+          const d1 = 2.75;
+
+        if (x < 1 / d1) {
+          return n1 * x * x;
+        } else if (x < 2 / d1) {
+            return n1 * (x -= 1.5 / d1) * x + 0.75;
+        } else if (x < 2.5 / d1) {
+          return n1 * (x -= 2.25 / d1) * x + 0.9375;
+        } else {
+          return n1 * (x -= 2.625 / d1) * x + 0.984375;
+        }
+      }
+
+
+
        /**
        * makeEaseOut
        * @description Easing utility function
