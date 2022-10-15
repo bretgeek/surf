@@ -4,30 +4,28 @@
     
 [<img alt="Surf JS"  src="imgs/logo.png" />](https://surf.monster/imgs/logo.png)
 
-## An Insanely Small Plugin Extendable, Reactive Element Template Library With Optional Component Based Syntax That Can Double as a JQuery Alternative.
+## A Small Plugin Extendable Animation, Reactive Element Template Library and JQuery Alternative.
 
 
 
 
 ### What is it?
 
-**Surf JS** is a few different things all wrapped up in one small package.
-
-It's a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
+**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
-But it's also a super small JQuery clone/replacement library that has **reactive element templates** (read on to learn what these are).
+It's also a small JQuery clone/replacement library that has **reactive element templates** (read on to learn what these are).
 
 
 
-**Don't let the JQuery clone part fool you!** -  **Surf JS** lets you build your component based UI using a familiar syntax and NO JSX! Using **Surf JS** as you would JQuery (in a non component based way) is entirely **optional**!
+**Surf JS** lets you build your component based UI using a familiar syntax and NO JSX! Using **Surf JS** as you would JQuery (in a non component based way) is entirely **optional**!
 
  **Surf JS** doesn't implement all JQuery methods but the basics are pretty similar and you can always configure **Surf JS** to do anything you want via plugins.
 
 
 
 
-A good way to think about **Surf JS** is that it's like JQuery if JQuery had a way to use components **AND** if JQuery had reactive element templates...with a much smaller footprint than JQuery.
+A good way to think about what **Surf JS** is, is that it's like JQuery if JQuery had a way to use components **AND** if JQuery had reactive element templates...with a much smaller footprint than JQuery.
 
 
 ### Where To Get It?
