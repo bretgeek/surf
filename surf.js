@@ -293,10 +293,10 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description Run function when document is ready - it's pretty important so it's the first method.
    * @return object
    */
-  function ready(fn, fallbacktime = 3000) {
+async  function ready(fn, fallbacktime = 3000) {
     let tout;
     let inc = 1;
-    docint = setInterval(() => {
+      docint = await setInterval(() => {
       if (surfloaded) {
         clearInterval(docint);
         clearTimeout(tout);
