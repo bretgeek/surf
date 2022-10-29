@@ -32,6 +32,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     createNode: _createNode,
     clone: clone,
     wrap: wrap,
+    sleep: sleep,
     hidekbd: hidekbd,
     onFrame: onFrame,
     css: css,
@@ -284,6 +285,19 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
   /* END THE STACK */
 
   /* START LIBRARY FUNCTIONS */
+
+
+  /**
+   * sleep
+   * SLEEP
+   * @description sleep for ms for helping with internal browser queue
+   * @return object
+   */
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+
    
   let docint;
 
@@ -293,10 +307,10 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
    * @description Run function when document is ready - it's pretty important so it's the first method.
    * @return object
    */
-  function ready(fn, fallbacktime = 3000) {
+   async function ready(fn, fallbacktime = 3000) {
     let tout;
     let inc = 1;
-      docint = setInterval( () => {
+      docint = await setInterval( () => {
       if (surfloaded) {
         clearInterval(docint);
         clearTimeout(tout);
