@@ -1220,8 +1220,10 @@ return this
             inv = window.requestInterval( function() {
               // run until cancel flag is truthy  - so send in a string name here to keep unique
               inc++;
-                let f = function(y) { fn(y,i,inc)    }; // i is iterator passed to fn - use 3rd param inc for total times ran.
-                  f(y,i,inc);
+             let options = {el: y, i: i, inc: inc};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
+                // call with fnName(options), anotherParam='foo' { // use options.el, options.i, options.inc    } 
+                // To send in additional dynamically changing  parameters after options, wrap the function call like    fn: (options) => { afunc(options, anotherDynamicParam) } }) 
+                 fn(options);
                   y.qisrun = false;
                   if(!infinity){
                   y.q.shift();
