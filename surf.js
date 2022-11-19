@@ -12,8 +12,7 @@
   * @return object
   */
 
-function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
-  // itr is things to iterate over. 
+function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
   // First we need to do some setup before we can hit the narly waves.
 
@@ -152,7 +151,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     obj[key] = obj[key] || Surf.registered.list[key]; // Overwrites existing obj keys! You won't get an error so if your freak Surf it's your fault!
   }
 
+
   /* ITR */
+  // itr is things to iterate over. 
 
   // If a function is passed in as itr then it will run once the document is ready.
   if (isFunction(itr)) {
@@ -249,40 +250,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}, ...Arr) {
     }
   } // end if itr
 
-  /* ...ARR */
-
-  // check for ...rest as Arr which allows combination of selectors as strings or elements ex: $('.app', el) or ${'.app, #app', el)
-  // make unique array first
-  Arr = Arr.filter((x, i, a) => a.indexOf(x) == i);
-  for (let sel of Arr) {
-    // let instead of cont because sel gets mutated  below sel = sel.split(',');
-    if (Array.isArray(sel)) {
-      for (const a of sel) {
-        if (a.nodeType === 1) {
-          _stk.push(a);
-        }
-      }
-    }
-    if (isElement(sel)) {
-      _stk.push(sel);
-    }
-
-    if (isString(sel)) {
-      sel = sel.split(",");
-      for (const s of sel) {
-        // log('s type is '+typeof(s));
-
-        const els = document.querySelectorAll(s);
-        for (const el of els) {
-          if (el.nodeType === 1) {
-            _stk.push(el);
-          }
-        }
-      }
-    }
-  } // end Arr ...Arr
-
   /* END THE STACK */
+
+
 
   /* START LIBRARY FUNCTIONS */
 
