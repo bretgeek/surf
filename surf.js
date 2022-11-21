@@ -90,6 +90,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     set: set,
     startTemplate: "{{",
     endTemplate: "}}",
+    observe: observe,
+    unobserve: unobserve,
     _eventDispatch: _eventDispatch,
     _rpx: _rpx,
     _rect: _rect,
@@ -1010,6 +1012,113 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     }
     return this;
   }
+
+
+
+ /**
+* observe
+* OBSERVE
+* @description observer generator
+* @return obj
+*/
+  function observe({ fn=()=>{},  name = 'name', delay=10, child=true, attr=true, subtree=false, attrs=['none'], chardat=false, attrsOV=false, chardatOV=false}={} ) {
+
+    if (typeof(fn) !== 'function') {
+      return;
+    }
+    // configuration of the observer
+    const config = {
+      childList: child,
+      attributes: attr,
+      characterData: chardat,
+      subtree: subtree,
+      attributeFilter: attrs,
+      attributeOldValue: attrsOV,
+      characterDataOldValue: chardatOV,
+    };
+
+
+  // create an observer instance
+for(let y of _stk){
+y.observers = y.observers || {};
+    const ob = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        // handle attributes seperately if passed in i.e if you dont pass any attrs in then it will only spy on DOM/node changes
+
+        if (mutation.type === 'attributes') {
+          if (attrs[0] !== 'none') {
+            setTimeout(() => {
+              fn(y);
+            }, delay);
+          }
+        } else {
+          if (attrs[0] === 'none') {
+            if (mutation.type === 'childList' || mutation.type === 'subtree' || mutation.type === 'characterData' ) {
+              setTimeout(() => {
+                fn(y);
+              }, delay);
+            }// end childList
+          }
+        }
+      });
+    });
+
+    // debug to see data attributes that hold the name of observer on the element itself
+    // let checkob = Object.keys(y.observers);
+    // let i = '';
+    // if(checkob.length){
+    // i = checkob.length + 1
+    // }
+    //    y.attr(`data-observer${i}`, `${name}`);
+
+
+    // keep a record of observers we can disconnect them later
+    // observers with the same name are overwritten
+    if (y.observers[name]) {
+      y.observers[name].disconnect();
+      delete y.observers[name];
+    }
+    // add to $observers object, pass in target nodes, and observer config
+    y.observers[name] = ob;
+    y.observers[name].observe(y, config);
+   }
+
+    return this;
+  }// end observe
+
+
+  /**
+* unobserve
+* UNOBSERVE
+* @description unobserve element
+*/
+
+  function unobserve(name='name') {
+    // disconnect all
+ for(let y of _stk){
+   y.observers = y.observers || {};
+   if (name === 'all') {
+      const ok = Object.keys(y.observers);
+     for (const o of ok) {
+       if(o){
+        y.observers[o].disconnect();
+        delete y.observers[o];
+       }
+     }
+    } else {
+      if (y.observers[name]) {
+        y.observers[name].disconnect();
+        delete y.observers[name];
+      }
+    }
+    }
+    return this;
+  }
+
+
+
+
+
 
   /**
    * requestInterval
