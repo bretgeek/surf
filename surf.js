@@ -33,6 +33,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     wrap: wrap,
     sleep: sleep,
     hidekbd: hidekbd,
+    submit: submit,
     onFrame: onFrame,
     css: css,
     data: data,
@@ -966,6 +967,25 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
       }
     }
   }
+
+
+
+  /**
+   * submit
+   * SUBMIT
+   * @description Submit a form.
+   * @return Object
+   */
+  function submit() {
+        for (const y of _stk) {
+          if(y.tagName === 'FORM'){
+            y.submit();
+           } 
+        }
+        return this;
+      }
+
+
 
   /**
    * __dumpCSS
