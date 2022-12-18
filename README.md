@@ -507,6 +507,10 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **set** - Set template string in object opts to new values.
 
+* **submit** - Submit forms.
+
+* **observe** - Observe changes in properties or child elements then perform callback actions.
+
 * **reset** - Reset templates back to what they were.
    
 * **_init** - Parse elements for templates and convert them to functions.
