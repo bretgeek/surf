@@ -28,22 +28,22 @@
 
 ### Features
 
-* **Super Small!** - currently at around  ~13KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~16KB minified (smaller if gzipped).
+
+* **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX.
 
 
 * **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like  {{msg}}  and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
 
 
-* **Lightweight JQuery Clone** - Can be used as a general purpose JQuery like library.
 
 * **Easy Familiar Syntax** - familiar chainable syntax with built-in DOM manipulation methods.
-
-* **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX as well as solving CSS bleed issues from web components.
-
 
 * **Extendable** - Highly configurable (you can change anything you want about the base functionality with a run time config) and it's extendable with plugins.
 
 * **A Delay/Animation Queue** - An iteratable and cancellable delay queue for building custom effects and animations.
+
+* **Lightweight JQuery Clone** - Optionally, can be used as a general purpose JQuery like library.
 
 * **Versatile** - It's intended to give you power and not lock you down into any one way of doing things. You can probably find ways to use it that the author has not even thought of yet. Use it in ways that you and your team define!
 
