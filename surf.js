@@ -2374,7 +2374,7 @@ y.observers = y.observers || {};
    */
   function detach() {
     for (const y of _stk) {
-      y.remove();
+     if(y){  y.remove(); }
     }
     return this;
   }
