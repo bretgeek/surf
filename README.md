@@ -6,7 +6,7 @@
 ## A Small Plugin Extendable Animation, Reactive Element Template Library and JQuery Alternative.
 
 
-
+ 
 
 ### What is it?
 
