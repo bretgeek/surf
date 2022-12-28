@@ -700,8 +700,13 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     const el = document.createElement(s[0]);
     el.innerHTML = s[1];
     // get the class
-    if (s[2]) {
+    let s2 = s[2];
+    if (s[2] ) {
+    // console.log('s2 is '+ s[2]);
+    // console.log("s2 len "+s2.length);
+    if(s2.length == 1){ // added this fix to prevent a singular empty class attribute from appearing in the dom when no class is passed with html strings.
       el.classList = s[2];
+    }
     }
     //get the id
     if (s[3]) {
