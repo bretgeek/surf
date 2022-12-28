@@ -10,7 +10,7 @@
 
 ### What is it?
 
-**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library as well as a component library for building user interfaces (UI).
+**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
 
