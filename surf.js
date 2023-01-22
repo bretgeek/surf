@@ -88,6 +88,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     copyright: copyright,
     reset: reset,
     set: set,
+    state: state,
     startTemplate: "{{",
     endTemplate: "}}",
     observe: observe,
@@ -702,7 +703,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     // get the class
     let s2 = s[2];
     if (s[2] ) {
-    // console.log('s2 is '+ s[2]);
+     console.log('s2 is '+ s[2]);
     // console.log("s2 len "+s2.length);
     if(s2.length == 1){ // added this fix to prevent a singular empty class attribute from appearing in the dom when no class is passed with html strings.
       el.classList = s[2];
@@ -710,6 +711,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     }
     //get the id
     if (s[3]) {
+     console.log('s3 is '+ s[3]);
       el.id = s[3];
     }
 
@@ -2643,6 +2645,25 @@ y.observers = y.observers || {};
     return this;
   }
 
+  /**
+   * state
+   * STATE
+   * @description Set a state on an element in the stack and or return it.
+   */
+  function state(statename, str=false){
+      for( const y of this.stk){
+        y.setstate = function(s,n) { y[s] = n    };
+        y.getstate = function(s) { return y[s] || false    };
+    if(statename){
+        y.state = statename;
+        y.setstate(statename, str);
+      }
+    }
+    return this;
+  }
+
+
+
   /* END PUBLIC METHODS / TOOLS */
 
   /* INTERNAL METHODS / TOOLS for templates */
@@ -2655,6 +2676,7 @@ y.observers = y.observers || {};
   /* Internal  Methods / TOOLS for templates */
   function __init() {
     for (let e of _stk) {
+        Surf(e).state(); // add setstate and getstate
       if (e.nodeName !== "#document") {
         let vdata = __templateParser(e);
         if (!isEmpty(vdata)) {
