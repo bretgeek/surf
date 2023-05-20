@@ -16,6 +16,27 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
   // First we need to do some setup before we can hit the narly waves.
 
+
+  // for setState Proxy to el.state
+  const handler = {
+        get: (target, key) => {
+          if (typeof target[key] === "object" && target[key] !== null) {
+            return new Proxy(target[key], handler)
+          }
+          return target[key]
+        },
+        set: (target, prop, value) => {
+          target[prop] = value
+          // console.log("We have changed! "+ prop + value)
+          return true
+        }
+      };
+
+
+
+
+
+
   // THE STACK
   let _stk = [];
 
@@ -88,7 +109,8 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     copyright: copyright,
     reset: reset,
     set: set,
-    state: state,
+    setState: setState,
+    removeState: removeState,
     startTemplate: "{{",
     endTemplate: "}}",
     observe: observe,
@@ -107,6 +129,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     _sfilter: _sfilter,
     _uuidv4: _uuidv4,
   };
+
 
   // Plugins
   if (allowPlugins) {
@@ -269,6 +292,57 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
+
+
+
+
+  /**
+   * setState
+   * SETSTATE
+   * @description set the elements named state (will overwrite existing html) ex. $(app).setState("hat", " I AM HAT "); 
+   * @return object
+   */
+ function setState(name, str) { // str can be html
+  for(const y of _stk){
+     y.setState[name] = str;
+   
+        update(y);
+         }
+    return this;
+    }
+
+/**
+   * removeState
+   * REMOVESTATE
+   * @description remove a named state (will update and overwrite existing html) ex. $(app).removeState("name");
+   * @return object
+   */
+ function removeState(st) {
+  for(const y of _stk){
+       delete y.state[st];
+       update(y)
+         }
+    return this;
+    }
+
+   /** 
+   * update
+   * UPDATE
+   * @description helper function for setState and removeState to update html with entries in el.state object (will update and overwrite existing html) ;
+   * @return null
+   */
+
+      function update (y) {
+        let ht = ""; 
+        for (const key in y.state) {
+          ht += y.state[key];
+      //  console.log(key)
+        }
+    // console.log("ht is "+ht);
+        if(ht.length){
+        Surf(y).html(ht);
+        }
+      }
 
 
    
@@ -650,6 +724,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
       for (const y of _stk) {
         res += y.textContent;
       }
+    res = res.replace(/(<([^>]+)>)/gim, "");
       return res;
     }
 
@@ -703,7 +778,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     // get the class
     let s2 = s[2];
     if (s[2] ) {
-     console.log('s2 is '+ s[2]);
+    // console.log('s2 is '+ s[2]);
     // console.log("s2 len "+s2.length);
     if(s2.length == 1){ // added this fix to prevent a singular empty class attribute from appearing in the dom when no class is passed with html strings.
       el.classList = s[2];
@@ -1237,7 +1312,7 @@ y.observers = y.observers || {};
    Example: - runs until after first iteration of second delay because fn calls delay with a cancel flag
    $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } })
 
-   Example: uns first delay once despite what second call to delay does because delay is canclled on the chain
+   Example: runs first delay once despite what second call to delay does because delay is canclled on the chain
    $('#app').delay({time: 1000, itr: 3, fn: (e,i)=> {   console.log(i )  } }).delay({time: 500, itr: 4, fn: (e,i)=> {  $(e).delay({cancel: true });  console.log(i +' in delay two' )  } }) . delay({cancel: true });
    */
 
@@ -2645,24 +2720,6 @@ y.observers = y.observers || {};
     return this;
   }
 
-  /**
-   * state
-   * STATE
-   * @description Set a state on an element in the stack and or return it.
-   */
-  function state(statename, str=false){
-      for( const y of this.stk){
-        y.setstate = function(s,n) { y[s] = n    };
-        y.getstate = function(s) { return y[s] || false    };
-    if(statename){
-        y.state = statename;
-        y.setstate(statename, str);
-      }
-    }
-    return this;
-  }
-
-
 
   /* END PUBLIC METHODS / TOOLS */
 
@@ -2676,7 +2733,9 @@ y.observers = y.observers || {};
   /* Internal  Methods / TOOLS for templates */
   function __init() {
     for (let e of _stk) {
-        Surf(e).state(); // add setstate and getstate
+    e.state = e.state || {};
+    e.setState =  new Proxy(e.state, handler);
+     //   Surf(e).state(); // add setstate and getstate
       if (e.nodeName !== "#document") {
         let vdata = __templateParser(e);
         if (!isEmpty(vdata)) {

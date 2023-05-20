@@ -512,7 +512,11 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 * **observe** - Observe changes in properties or child elements then perform callback actions.
 
 * **reset** - Reset templates back to what they were.
-   
+
+* **setState** - Set named states on elements and update HTML (overwrites existing HTML).
+
+* **removeState** - Remove named states on elements and update HTML (overwrites existing HTML).
+
 * **_init** - Parse elements for templates and convert them to functions.
 
 * **ready** - Run function when document is ready - it's pretty important so it's the first method.
