@@ -513,9 +513,9 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **reset** - Reset templates back to what they were.
 
-* **setState** - Set named states on elements and update HTML (overwrites existing HTML).
+* **setState** - Set named states on elements and update HTML.
 
-* **removeState** - Remove named states on elements and update HTML (overwrites existing HTML).
+* **removeState** - Remove named states on elements and update HTML.
 
 * **_init** - Parse elements for templates and convert them to functions.
 

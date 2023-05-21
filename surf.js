@@ -293,11 +293,12 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   /**
    * setState
    * SETSTATE
-   * @description set the elements named state (will overwrite existing html) ex. $(app).setState("hat", " I AM HAT "); 
+   * @description set the elements named state (will add to existing html) ex. $(app).setState("hat", " I AM HAT "); clear existing html with $(app).setState("html", "");
    * @return object
    */
  function setState(name, str) { // str can be html
   for(const y of _stk){
+    y.setState.html = y.state.html || Surf(y).html();
      y.setState[name] = str;
    
         update(y);
@@ -308,7 +309,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 /**
    * removeState
    * REMOVESTATE
-   * @description remove a named state (will update and overwrite existing html) ex. $(app).removeState("name");
+   * @description remove a named state (will update html) ex. $(app).removeState("name");
    * @return object
    */
  function removeState(st) {
