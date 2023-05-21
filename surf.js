@@ -4,8 +4,8 @@
   * @license MIT
   * @description Surf JS is a JavaScript Library for Reactive Element Templates with component based rendering and an insanely small JQuery clone.
   * Note: INTERNAL tools begin with double underscores  __ and are located near where they are first used or by their use.
-  * Note: Methods that begin with single underscore _  OR "is" do not return this and return something else that will break a chain.  CreateNode is an exception to this because it is used most frequently but it does break the chain.
-  * Note: Similarly Methids that begin with is* Return a boolean not this and will break the chain.
+  * Note: Methods that begin with single underscore _  do not return this and return something else that will break a chain. The createNode method an exception to because it is used most frequently but it does break the chain.
+  * Note: Similarly Methods that begin with is* return a boolean not this and will break the chain.
   * Note: To make searching for methods easier, Search for method names using all caps example: CSS or ISFUNCTION
   * @author BRET LOWRY <bretgeek@gmail.com>
   * @constructor
@@ -17,7 +17,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   // First we need to do some setup before we can hit the narly waves.
 
 
-  // for setState Proxy to el.state
+  // For setState Proxy to el.state
   const handler = {
         get: (target, key) => {
           if (typeof target[key] === "object" && target[key] !== null) {
@@ -31,9 +31,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
           return true
         }
       };
-
-
-
 
 
 
@@ -138,9 +135,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
     // add everything from Surf.plugin.fn  (Surf.prototype) to obj
     for (const key in Surf.plugin.fn) {
-      //log('key is '+key)
       obj[key] = obj[key] || Surf.plugin.fn[key].bind(obj); // does not overwrite existing obj keys you won't get an error so if your plugin doesn't work re-name it!
-      //log(obj)
     }
   }
 
@@ -153,7 +148,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
     // add everything from Surf.config.conf (Surf.prototype) to obj
     for (const key in Surf.config.conf) {
-      //log(Surf.config.conf[key])
       obj[key] = Surf.config.conf[key]; // Overwrites existing obj keys! You won't get an error so if your reak Surf it's your fault!
     }
   }
