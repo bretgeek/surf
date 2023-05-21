@@ -2730,7 +2730,6 @@ y.observers = y.observers || {};
     for (let e of _stk) {
     e.state = e.state || {};
     e.setState =  new Proxy(e.state, handler);
-     //   Surf(e).state(); // add setstate and getstate
       if (e.nodeName !== "#document") {
         let vdata = __templateParser(e);
         if (!isEmpty(vdata)) {
