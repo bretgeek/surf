@@ -2866,9 +2866,7 @@ y.observers = y.observers || {};
       if(_stk.length){
         let i = 0;
         _stk.forEach((y) => {
-if(!y.state){
- y.state =  {};
-}
+ y.state = y.state ||  {};
  y.setState =  new Proxy(y.state, handler);
 
            obj[i] = y;
