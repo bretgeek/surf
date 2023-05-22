@@ -249,7 +249,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
             const id = s.replace(/#/, "");
             els = document.getElementById(id);
             // log('s is '+s);
+    if (els) {
             _stk.push(els);
+          }
           }
           // handle classes as live HTML collection
           else if (s.startsWith(".")) {
@@ -257,12 +259,16 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
             els = document.getElementsByClassName(cn);
             // log('cn is '+s);
             for (const el of els) {
+    if (el.nodeType == 1) {
               _stk.push(el);
+            }
             }
           } else {
             els = document.querySelectorAll(s);
             for (const el of els) {
+    if (el.nodeType == 1) {
               _stk.push(el);
+            }
             }
           }
         }
@@ -2728,9 +2734,7 @@ y.observers = y.observers || {};
   /* Internal  Methods / TOOLS for templates */
   function __init() {
     for (let e of _stk) {
-    e.state = e.state || {};
-    e.setState =  new Proxy(e.state, handler);
-      if (e.nodeName !== "#document") {
+         if (e.nodeName !== "#document") {
         let vdata = __templateParser(e);
         if (!isEmpty(vdata)) {
           // dont let vdata overwrite exisiting properties
@@ -2862,6 +2866,11 @@ y.observers = y.observers || {};
       if(_stk.length){
         let i = 0;
         _stk.forEach((y) => {
+if(!y.state){
+ y.state =  {};
+}
+ y.setState =  new Proxy(y.state, handler);
+
            obj[i] = y;
            i++;
              });
