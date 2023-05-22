@@ -10,7 +10,7 @@
 
 ### What is it?
 
-**Surf JS** is a small ~17kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
+**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
 
@@ -28,7 +28,7 @@
 
 ### Features
 
-* **Super Small!** - currently at around  ~17KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~16KB minified (smaller if gzipped).
 
 * **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX.
 
@@ -507,8 +507,6 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 * **set** - Set template string in object opts to new values.
 
 * **submit** - Submit forms.
-
-* **observe** - Observe changes in properties or child elements then perform callback actions.
 
 * **reset** - Reset templates back to what they were.
 
