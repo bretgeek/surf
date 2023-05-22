@@ -304,6 +304,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
    */
  function setState(name, str) { // str can be html
   for(const y of _stk){
+if(isFunction(str)){
+str = str(y)
+ }
     y.setState.html = y.state.html || Surf(y).html();
      y.setState[name] = str;
    
