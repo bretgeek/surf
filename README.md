@@ -10,7 +10,7 @@
 
 ### What is it?
 
-**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
+**Surf JS** is a small ~17kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
 
@@ -28,13 +28,12 @@
 
 ### Features
 
-* **Super Small!** - currently at around  ~16KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~17KB minified (smaller if gzipped).
 
 * **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX.
 
 
 * **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like  {{msg}}  and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
-
 
 
 * **Easy Familiar Syntax** - familiar chainable syntax with built-in DOM manipulation methods.
