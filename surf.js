@@ -337,7 +337,9 @@ str = str(y)
       function update (y) {
         let ht = ""; 
         for (const key in y.state) {
+        if(y.state.hasOwnProperty(key)){
           ht += y.state[key];
+        }  
       //  console.log(key)
         }
     // console.log("ht is "+ht);
