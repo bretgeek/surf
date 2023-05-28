@@ -711,7 +711,7 @@ str = str(y)
       }
       return res;
     }
-    __htxt(str, (limit = "all"));
+    __htxt(str, "all");
     return this;
   }
 
@@ -732,7 +732,7 @@ str = str(y)
       return res;
     }
 
-    __htxt(str, (limit = "all"), true);
+    __htxt(str, "all", true);
     return this;
   }
 
@@ -853,6 +853,7 @@ str = str(y)
   function click(fn) {
     for (const y of _stk) {
       Surf(y).on("click", function (e) {
+          fn = fn.bind(y);// this can be used from fn
         fn(e);
       });
     }
@@ -1284,7 +1285,8 @@ str = str(y)
              let options = {el: y, i: i, inc: inc};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
                 // call with fnName(options), anotherParam='foo' { // use options.el, options.i, options.inc    } 
                 // To send in additional dynamically changing  parameters after options, wrap the function call like    fn: (options) => { afunc(options, anotherDynamicParam) } }) 
-                 fn(options);
+             fn = fn.bind(y);
+               fn(options);
                   y.qisrun = false;
                   if(!infinity){
                   y.q.shift();
@@ -2171,6 +2173,7 @@ str = str(y)
       obj.first = _stk[0];
       if (isFunction(fn)) {
         for (const y of _stk) {
+          fn = fn.bind(y);// this can be used from fn
           fn(y);
         }
       }
@@ -2219,6 +2222,7 @@ str = str(y)
       // if a function was passed execute it for every element of the new stack
       if (isFunction(fn)) {
         for (const y of _stk) {
+          fn = fn.bind(y);// this can be used from fn
           fn(y);
         }
       }
@@ -2275,6 +2279,7 @@ str = str(y)
       // if a function was passed execute it for every element of the new stack
       if (isFunction(fn)) {
         for (const y of _stk) {
+          fn = fn.bind(y);// this can be used from fn
           fn(y);
         }
       }
@@ -2305,6 +2310,7 @@ str = str(y)
       // log(str);
       if (y.matches(str)) {
         if (isFunction(fn)) {
+          fn = fn.bind(y);// this can be used from fn
           fn(y);
         }
       }
@@ -2321,6 +2327,7 @@ str = str(y)
   function grab({ all = false, fn = false } = {}) {
     if (isFunction(fn)) {
       for (const y of _stk) {
+          fn = fn.bind(y);// this can be used from fn
         fn(y);
       }
     }
@@ -2341,6 +2348,7 @@ str = str(y)
   function each(fn) {
     if (isFunction(fn)) {
       for (const y of _stk) {
+          fn = fn.bind(y);// this can be used from fn
         fn(y);
       }
     }
