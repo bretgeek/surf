@@ -480,7 +480,7 @@ str = str(y)
    * @description  Create a new Element and return it.
    * @return Element
    */
-  function _createNode(nodetype = "div", override = false) {
+  function _createNode(nodetype = "div", override = true) {
     const allowedNodes = [
       "html",
       "head",
@@ -704,6 +704,9 @@ str = str(y)
   function html(str = false, limit = "all") {
     // log(str)
     let res = "";
+    if(isNumber(str)){
+    str = str.toString();
+    }
     if (!isString(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
@@ -723,6 +726,9 @@ str = str(y)
    */
   function text(str, limit = "all") {
     let res = "";
+    if(isNumber(str)){
+    str = str.toString();
+    }
     if (!isString(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
