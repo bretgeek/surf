@@ -30,7 +30,7 @@
 
   // For surf to work on anything it needs to load a document
 
-  $().load(str); 
+  $().load(str); // you can call this again with different parameters to load new data. 
 
   // some example queries:
 
