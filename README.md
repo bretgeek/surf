@@ -24,7 +24,12 @@
  (right click save as)
 
 
-**Visit:** https://surf.monster for updates and working examples..
+**Visit:** https://surf.monster for updates and working examples.
+
+
+**For use with Deno:** - use surf.mjs in this repo.
+
+
 
 ### Features
 
