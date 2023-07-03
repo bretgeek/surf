@@ -52,6 +52,9 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     sleep: sleep,
     hidekbd: hidekbd,
     submit: submit,
+    range: (lower,upper,step=1)=>{
+             return Array.from(new Array(Math.floor(upper/step-lower/step)+1),(_,i)=>lower/step+i).map(x=>x*step)
+           },
     css: css,
     data: data,
     domDelay: 100,
