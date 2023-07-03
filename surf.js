@@ -193,6 +193,11 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
         }
       }
     }
+    
+    // if an objext like {}  
+    if (isObject(itr)) {
+          _stk.push(itr);
+    }
 
     // if a single element is passed
     if (itr.nodeType == 1) {
