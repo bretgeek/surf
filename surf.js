@@ -1217,25 +1217,38 @@ str = str(y)
      -- Create a new timeline/sprite
          let tl = new $().timeline({el: "#app", fps: fps });
 
-     -- Add some onFrame functions
+     -- Add some onFrame functions.
 
          tl.onFrame["200"] = (o)=> {
          console.log("FRAME 100 "+o.el);
          $(o.el).append("Hey 2");
           }
 
-     -- flip through a range of frames and change an element's CSS (i.e. make flip books by changing background)
+     -- flip through a range of frames and change an element's CSS (i.e. make flip books by changing background).
 
           tl.onFrameRange($().range(101, 120, 1), (o)=> {
           console.log("FRAME  "+o.inc);
           let right = $()._cs(o.el, "left");
           $(o.el).append(o.inc).css(`position: relative; left:  ${right+1}px; `);
           });
- 
+
+     -- play the timeline
+         tl.play();
+
+     -- make sprites by wrapping all your onFrame functions in a function to play and stop them. 
+        let tl = new $().timeline({el: "#app", fps: fps }); // notice this is outside the function (put inside to create new timelines)
+        function sprite(tl){
+         tl.onFrame["200"] = (o)=> {
+         console.log("FRAME 100 "+o.el);
+         $(o.el).append("Hey 2");
+          }
+         tl.play();
+         }
+
 
 */
 
-function timeline({ el = false, node="div", time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
+function timeline({ el = false, node="div", restartable=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
     let dummy = el;
     if (!dummy) {
         dummy = $().createNode(node);
@@ -1248,7 +1261,19 @@ function timeline({ el = false, node="div", time = false, itr = 1, infinity = fa
                 tobj.onFrame[r] = fn;
             });
         },
+ 
+         autostop: (o)=> {
+                   // Auto stop if no more onFrame entires
+                   let keys = Object.keys(tobj.onFrame);
+                   let lastkey = keys[keys.length-1];
 
+                    if(lastkey < o.inc ){
+                    //console.log("NO MORE FRAMES AUTO STOPPED");
+                      tobj.stop(); 
+                    }
+         },
+
+        // don't call start directly use play!
         start: () => {
             // Only start if some onframes have been made
             if (isEmpty(tobj.onFrame)) {
@@ -1261,9 +1286,10 @@ function timeline({ el = false, node="div", time = false, itr = 1, infinity = fa
                 fps: fps,
                 fn: (o) => {
                     let frame = o.inc.toString();
-                    //console.log("wtf" +frame);
+                    tobj.autostop(o);
+                       
                     if (tobj.onFrame[frame]) {
-                        tobj.onFrame[frame](o);
+                      tobj.onFrame[frame](o);
                     }
                 }
             };
@@ -1275,7 +1301,7 @@ function timeline({ el = false, node="div", time = false, itr = 1, infinity = fa
                     fps: fps,
                     fn: (o) => {
                         let frame = o.inc.toString();
-                        //console.log("wtf" +frame);
+
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
                         }
@@ -1309,12 +1335,15 @@ function timeline({ el = false, node="div", time = false, itr = 1, infinity = fa
                 };
             }
 
-            if (time && infinity) {
+            if (time && infinity) { // will not actually run forever because we will auto stop when no more onFrames
                 delayobj = {
                     time: time,
                     infinity: infinity,
                     fn: (o) => {
                         let frame = o.inc.toString();
+
+                        tobj.autostop(o);
+
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
                         }
@@ -1325,15 +1354,21 @@ function timeline({ el = false, node="div", time = false, itr = 1, infinity = fa
             Surf(dummy).delay(delayobj);
         },
 
+        play: ( )=> { tobj.stop( tobj.start)  },
 
-        stop: () => {
+        stop: (fn=()=>{}) => {
 
             let dums = $(dummy).all();
             dums.forEach((e) => {
    //             console.log("stopped");
                 e.cancel = true
-                if (!el) {
-                    e.remove()
+                e.qisrun = false;
+                  setTimeout(()=> {
+                  e.cancel = false;
+                  fn();
+                  }, 500);
+                if (!el && !restartable) {
+                    e.remove();
                 }
             });
         },
