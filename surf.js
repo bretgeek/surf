@@ -103,6 +103,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     delay: delay,
     applyEase: applyEase,
     animate: delay,
+    timeline: timeline,
     trigger: trigger,
     find: find,
     children: children,
@@ -1204,6 +1205,142 @@ str = str(y)
       }
     }
  }
+
+
+  /**
+   * timeline
+   * TIMELINE
+   * @description Create timelines/sprites with own onFrame/keyframe function execution.
+   * @return {object}
+   * @usage Passed in parameters are the same as using Delay. 
+   -- EXAMPLES:  
+     -- Create a new timeline/sprite
+         let tl = new $().timeline({el: "#app", fps: fps });
+
+     -- Add some onFrame functions
+
+         tl.onFrame["200"] = (o)=> {
+         console.log("FRAME 100 "+o.el);
+         $(o.el).append("Hey 2");
+          }
+
+     -- flip through a range of frames and change an element's CSS (i.e. make flip books by changing background)
+
+          tl.onFrameRange($().range(101, 120, 1), (o)=> {
+          console.log("FRAME  "+o.inc);
+          let right = $()._cs(o.el, "left");
+          $(o.el).append(o.inc).css(`position: relative; left:  ${right+1}px; `);
+          });
+ 
+
+*/
+
+function timeline({ el = false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
+    let dummy = el;
+    if (!dummy) {
+        dummy = $().createNode();
+    }
+    let tobj = {
+        onFrame: {},
+        onFrameRange: (range, fn) => {
+            console.log("range " + range)
+            range.forEach((r) => {
+                tobj.onFrame[r] = fn;
+            });
+        },
+
+        start: () => {
+            // Only start if some onframes have been made
+            if (isEmpty(tobj.onFrame)) {
+                console.error("No Frames sent in on timeline for " + el + ". Did you call start() before adding frames?");
+                return;
+            }
+            //Make different delay calls based on fps and endTime/itr
+
+            let delayobj = {
+                fps: fps,
+                fn: (o) => {
+                    let frame = o.inc.toString();
+                    //console.log("wtf" +frame);
+                    if (tobj.onFrame[frame]) {
+                        tobj.onFrame[frame](o);
+                    }
+                }
+            };
+
+// Change the object that is sent in to delay based on the params recvd
+            if (fps && endTime) {
+                delayobj = {
+                    endTime: endTime,
+                    fps: fps,
+                    fn: (o) => {
+                        let frame = o.inc.toString();
+                        //console.log("wtf" +frame);
+                        if (tobj.onFrame[frame]) {
+                            tobj.onFrame[frame](o);
+                        }
+                    }
+                };
+            }
+
+
+            if (time && endTime && !itr) {
+                delayobj = {
+                    time: time,
+                    endTime: endTime,
+                    fn: (o) => {
+                        let frame = o.inc.toString();
+                        if (tobj.onFrame[frame]) {
+                            tobj.onFrame[frame](o);
+                        }
+                    }
+                };
+            }
+            if (time && itr && !endTime) {
+                delayobj = {
+                    time: time,
+                    itr: itr,
+                    fn: (o) => {
+                        let frame = o.inc.toString();
+                        if (tobj.onFrame[frame]) {
+                            tobj.onFrame[frame](o);
+                        }
+                    }
+                };
+            }
+
+            if (time && infinity) {
+                delayobj = {
+                    time: time,
+                    infinity: infinity,
+                    fn: (o) => {
+                        let frame = o.inc.toString();
+                        if (tobj.onFrame[frame]) {
+                            tobj.onFrame[frame](o);
+                        }
+                    }
+                };
+            }
+           // kick off the timeline
+            Surf(dummy).delay(delayobj);
+        },
+
+
+        stop: () => {
+
+            let dums = $(dummy).all();
+            dums.forEach((e) => {
+   //             console.log("stopped");
+                e.cancel = true
+                if (!el) {
+                    e.remove()
+                }
+            });
+        },
+
+    } // end tobj
+    return tobj;
+}
 
 
 
