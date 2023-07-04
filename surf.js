@@ -1235,10 +1235,10 @@ str = str(y)
 
 */
 
-function timeline({ el = false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
+function timeline({ el = false, node="div", time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
     let dummy = el;
     if (!dummy) {
-        dummy = $().createNode();
+        dummy = $().createNode(node);
     }
     let tobj = {
         onFrame: {},
