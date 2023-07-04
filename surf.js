@@ -1248,7 +1248,7 @@ str = str(y)
 
 */
 
-function timeline({ el = false, node="div", restartable=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false } = {}) {
+function timeline({ el = false, node="div", restartable=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false, ease="quadIn", flux=100 } = {}) {
     let dummy = el;
     if (!dummy) {
         dummy = $().createNode(node);
@@ -1285,6 +1285,8 @@ function timeline({ el = false, node="div", restartable=false, time = false, itr
             let delayobj = {
                 fps: fps,
                 fn: (o) => {
+                 o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
+                 o.ease = 1+Math.round(o.ease * 10); 
                     let frame = o.inc.toString();
                     tobj.autostop(o);
                        
