@@ -1245,10 +1245,10 @@ str = str(y)
          tl.play();
          }
 
-
+     -- cfn is a continuous function that will run on every frame if passed in.
 */
 
-function timeline({ el = false, node="div", restartable=false, keepalive=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, done = false, cancel = false, ease="quadIn", flux=100 } = {}) {
+function timeline({ el = false, node="div", restartable=false, keepalive=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, cfn = false, done = false, cancel = false, ease="quadIn", flux=100 } = {}) {
     let dummy = el;
     if (!dummy) {
         dummy = $().createNode(node);
@@ -1290,9 +1290,14 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                 fn: (o) => {
                  o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
                  o.ease = Math.round(o.ease * 10); 
-                    let frame = o.inc.toString();
+
                     tobj.autostop(o);
-                       
+
+                       if(isFunction(cfn)){
+                       cfn(o);
+                       }
+
+                    let frame = o.inc.toString();
                     if (tobj.onFrame[frame]) {
                       tobj.onFrame[frame](o);
                     }
@@ -1305,8 +1310,14 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                     endTime: endTime,
                     fps: fps,
                     fn: (o) => {
-                        let frame = o.inc.toString();
+                      o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
+                      o.ease = Math.round(o.ease * 10); 
 
+                       if(isFunction(cfn)){
+                       cfn(o);
+                       }
+
+                        let frame = o.inc.toString();
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
                         }
@@ -1320,6 +1331,13 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                     time: time,
                     endTime: endTime,
                     fn: (o) => {
+                      o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
+                      o.ease = Math.round(o.ease * 10); 
+
+                       if(isFunction(cfn)){
+                       cfn(o);
+                       }
+
                         let frame = o.inc.toString();
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
@@ -1332,6 +1350,13 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                     time: time,
                     itr: itr,
                     fn: (o) => {
+                      o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
+                      o.ease = Math.round(o.ease * 10); 
+
+                       if(isFunction(cfn)){
+                       cfn(o);
+                       }
+
                         let frame = o.inc.toString();
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
@@ -1345,10 +1370,12 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                     time: time,
                     infinity: infinity,
                     fn: (o) => {
-                        let frame = o.inc.toString();
+                      o.ease = Surf().applyEase(dummy, {ease: ease, time: flux});
+                      o.ease = Math.round(o.ease * 10); 
 
                         tobj.autostop(o);
 
+                        let frame = o.inc.toString();
                         if (tobj.onFrame[frame]) {
                             tobj.onFrame[frame](o);
                         }
