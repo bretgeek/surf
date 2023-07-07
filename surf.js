@@ -1193,9 +1193,6 @@ str = str(y)
       
       }
 
-         // frame number is only useful when using fps and can be accessed on element.frame
-        el.frame = el.frame + 1 || 1;
-
  
       if(el.q.length == 0){
       el.frame = 1;
@@ -1263,7 +1260,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
         },
  
          autostop: (o)=> {
-                   if(keepalive) {
+                  if(keepalive) {
                    return;
                    }
                    // Auto stop if no more onFrame entires
@@ -1397,6 +1394,8 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
                 e.qisrun = false;
                   setTimeout(()=> {
                   e.cancel = false;
+                  e.inc = 0;
+                  e.frame = 0   
                   fn();
                   }, 500);
                 if (!el && !restartable) {
@@ -1442,10 +1441,12 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
       let dum = Surf().createNode('div');
       _stk.push(dum)
     }
-    let inc = 0
+    //let inc = 0
     for(const y of _stk){
       y.q = y.q || [];
       y.qisrun = y.qisrun || false;
+      y.inc = y.inc || 0; // y.inc and y.frame are the same - leaving y.inc for backword compatability
+      y.frame = y.frame || 0;
 
       // If an endTime passed in (with no fps) caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
       if(isNumber(endTime)){
@@ -1499,8 +1500,9 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
           let inv;
             inv = window.requestInterval( function() {
               // run until cancel flag is truthy  - so send in a string name here to keep unique
-              inc++;
-             let options = {el: y, i: i, inc: inc};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
+              y.inc++;
+              y.frame++;
+             let options = {el: y, i: i, inc: y.inc, frame: y.frame};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
                 // call with fnName(options), anotherParam='foo' { // use options.el, options.i, options.inc    } 
                 // To send in additional dynamically changing  parameters after options, wrap the function call like    fn: (options) => { afunc(options, anotherDynamicParam) } }) 
              fn = fn.bind(y);
