@@ -1193,7 +1193,8 @@ str = str(y)
       
       }
 
- 
+      el.frame = el.frame + 1 || 1; // frame gets set here in runq so that external scripts can reset it too.
+
       if(el.q.length == 0){
       el.frame = 1;
       if(isFunction(done)){
@@ -1445,8 +1446,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
     for(const y of _stk){
       y.q = y.q || [];
       y.qisrun = y.qisrun || false;
-      y.inc = y.inc || 0; // y.inc and y.frame are the same - leaving y.inc for backword compatability
-      y.frame = y.frame || 0;
+      y.inc = y.inc || 0; 
 
       // If an endTime passed in (with no fps) caclulate approximated iterations based time. For instance if you only want to run delay for a period of time. It's up to the user to mkae sure endTime is divisible evenly by time.
       if(isNumber(endTime)){
@@ -1501,8 +1501,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
             inv = window.requestInterval( function() {
               // run until cancel flag is truthy  - so send in a string name here to keep unique
               y.inc++;
-              y.frame++;
-             let options = {el: y, i: i, inc: y.inc, frame: y.frame};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
+             let options = {el: y, i: i, inc: y.inc,};  // el is the element of stack (y) - i is iterator passed to fn - inc for total times ran .
                 // call with fnName(options), anotherParam='foo' { // use options.el, options.i, options.inc    } 
                 // To send in additional dynamically changing  parameters after options, wrap the function call like    fn: (options) => { afunc(options, anotherDynamicParam) } }) 
              fn = fn.bind(y);
