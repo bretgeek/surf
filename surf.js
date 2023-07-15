@@ -1003,15 +1003,20 @@ str = str(y)
    * scrollTo
    * SCROLLtO
    * @description Scroll to element "to".
+   * @usage let send in an optional second parameter options object o = { el: "#app", behavior: 'smooth', block: 'end', inline: 'nearest' };
+   * options are same options as scrollIntoView() at MDN https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+   * $("#app").scrollTo(false, o); first param is set to false to scroll to #app
+   * $().scrollTo(stage, o); if stage is an element it will scroll there if
    * @return Object
    */
-  function scrollTo(to) {
+  function scrollTo(to, o=false) {
     if (isString(to)) {
       to = document.querySelectorAll(to)[0];
-    } else {
+    } 
+    if(!isElement(to)){
       to = _stk[0];
     }
-    to.scrollIntoView();
+    to.scrollIntoView(o);
     return this;
   }
 
@@ -1247,6 +1252,8 @@ str = str(y)
 */
 
 function timeline({ el = false, node="div", restartable=false, keepalive=false, time = false, itr = 1, infinity = false, fps = false, endTime = false, fn = () => {}, cfn = false, done = false, cancel = false, ease="quadIn", flux=100 } = {}) {
+    
+
     let dummy = el;
     if (!dummy) {
         dummy = $().createNode(node);
