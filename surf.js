@@ -1001,7 +1001,7 @@ str = str(y)
 
   /**
    * scrollTo
-   * SCROLLtO
+   * SCROLLTO
    * @description Scroll to element "to".
    * @usage let send in an optional second parameter options object o = { el: "#app", behavior: 'smooth', block: 'end', inline: 'nearest' };
    * options are same options as scrollIntoView() at MDN https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
@@ -2035,7 +2035,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
   /**
    * fadeOut
    * FADEOUT
-   * @description fade out an element with speed in milliseconds and an option display setting to end with.
+   * @description fade out an element with speed in milliseconds for best result use delay method instead of chaining fadeIn and Out together.
    * @return {object}
    */
   function fadeOut(speed = 300) {
@@ -2052,7 +2052,6 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
           opa = 0;
           Surf(y).css(`opacity: ${opa} `);
           // clearInterval(intv);
-          Surf(y).css(`visibility: hidden;`);
           intv.clear();
         }
       }, speed);
