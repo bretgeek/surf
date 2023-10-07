@@ -52,6 +52,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     sleep: sleep,
     hidekbd: hidekbd,
     submit: submit,
+    datum: [],
     range: (lower,upper,step=1)=>{
              return Array.from(new Array(Math.floor(upper/step-lower/step)+1),(_,i)=>lower/step+i).map(x=>x*step)
            },
@@ -191,6 +192,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   if (itr) {
     // if itr is a collection
     if (Array.isArray(itr)) {
+      obj.datum = itr;
       for (const a of itr) {
         if (a.nodeType === 1) {
           _stk.push(a);
@@ -841,24 +843,18 @@ str = str(y)
   /**
    * data
    * DATA
-   * @description Get or set data attributes of a node.
-   * @return String
+   * @description Exec function against obj.datum which can be a collection or an array like structure.
+   * @return Object
    */
-  function data(a, b = false, r = "set") {
-    b = _singleDash(b);
-    for (const y of _stk) {
-      if (r === "remove") {
-        y.removeAttribute("data-" + a);
-      }
-      if (r === "set") {
-        y.setAttribute("data-" + a, `${b}`);
-      }
-
-      if (r === "get") {
-        return y.getAttribute("data-" + a);
-      }
+  function data(fn=false){
+    if(obj.datum.length && isFunction(fn)){
+      obj.datum.forEach((d)=>{
+        fn(d);
+      });
     }
-  }
+    return this;
+  }    
+
 
   /**
    * click
