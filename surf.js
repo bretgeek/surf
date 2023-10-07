@@ -47,12 +47,14 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     },
     stk: _stk,
     createNode: _createNode,
+    create: create,
     clone: clone,
     wrap: wrap,
     sleep: sleep,
     hidekbd: hidekbd,
     submit: submit,
     datum: [],
+    loadData: function(data){ obj.datum = data; return this; },
     range: (lower,upper,step=1)=>{
              return Array.from(new Array(Math.floor(upper/step-lower/step)+1),(_,i)=>lower/step+i).map(x=>x*step)
            },
@@ -192,7 +194,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   if (itr) {
     // if itr is a collection
     if (Array.isArray(itr)) {
-      obj.datum = itr;
+      obj.datum = itr; // if an array of data is passed in that can be used directly as data otherwise the data is the elements. Use .data function to load data.
       for (const a of itr) {
         if (a.nodeType === 1) {
           _stk.push(a);
@@ -485,6 +487,34 @@ str = str(y)
     return str;
   }
 
+
+  /**
+   * create
+   * CREATE
+   * @description  Create a new Elements based on data- use after calling data().
+   * @return Element
+   */
+  function create(str = false, prepend = false){
+   if(isString(str)){
+   let fstk = _stk;
+    _stk = [];
+     for(const y of fstk){
+      
+     for(let d = 0 ; d < obj.datum.length; d++ ){
+       let n =  _createNode(str);
+      _stk.push(n);
+       if(prepend){
+      Surf(n).prependTo(y);
+       }else{
+         Surf(n).appendTo(y);
+     }
+   
+     }
+}     
+   }
+  return this
+  }
+
   /**
    * _createNode
    * _CREATENODE
@@ -718,7 +748,7 @@ str = str(y)
     if(isNumber(str)){
     str = str.toString();
     }
-    if (!isString(str) && limit === "all") {
+    if (!isString(str) && !isFunction(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
         res += y.innerHTML;
@@ -740,7 +770,7 @@ str = str(y)
     if(isNumber(str)){
     str = str.toString();
     }
-    if (!isString(str) && limit === "all") {
+    if (!isString(str) && !isFunction(str) && limit === "all") {
       // log('stk len' + _stk.length);
       for (const y of _stk) {
         res += y.textContent;
@@ -761,25 +791,32 @@ str = str(y)
    */
   function __htxt(str, limit = "all", t = false) {
     let inc = 0;
+    let ss = str;
     for (const y of _stk) {
       // because html will blow away and templates on first use we will init it
       if (!y.templateHTML) {
         __init(y);
       }
+     if(isFunction(str)){
+           ss = str(obj.datum[inc] || 0, inc);
+      console.log(ss);
+         inc++;
+        }
+   
       if (isNumber(limit) && inc <= limit) {
         // log('limit '+ inc);
         inc++;
         if (t) {
-          y.textContent = str;
+          y.textContent = ss;
         } else {
-          y.innerHTML = str;
+          y.innerHTML = ss;
         }
       }
       if (limit === "all") {
         if (t) {
-          y.textContent = str;
+          y.textContent = ss;
         } else {
-          y.innerHTML = str;
+          y.innerHTML = ss;
         }
       }
     }
@@ -843,7 +880,7 @@ str = str(y)
   /**
    * data
    * DATA
-   * @description Exec function against obj.datum which can be a collection or an array like structure.
+   * @description Load array data into obj.datum or if function Exec function against obj.datum which can be a collection or an array like structure.
    * @return Object
    */
   function data(fn=false){
@@ -851,6 +888,8 @@ str = str(y)
       obj.datum.forEach((d)=>{
         fn(d);
       });
+    }else{
+    obj.loadData(fn);
     }
     return this;
   }    
@@ -1042,6 +1081,8 @@ str = str(y)
     return this;
   }
 
+
+
   /**
    * attr
    * ATTR
@@ -1053,6 +1094,16 @@ str = str(y)
       if (r) {
         for (const y of _stk) {
           y.removeAttribute(str);
+        }
+        return this;
+      }
+
+      if(isFunction(s)){
+      let i = 0
+        for (const y of _stk) {
+          let ss = s(obj.datum[i] || 0, i);
+          y.setAttribute(str, ss);
+         i++;
         }
         return this;
       }
