@@ -590,8 +590,17 @@ str = str(y)
         nodetype = "div";
       }
     }
+    let svgNS = "http://www.w3.org/2000/svg"; 
+    let newnode;
+    let svgtypes = ["svg", "circle", "path", "g", "rectangle", "text", "ellipse", "polygon", "line"];  
+    if(svgtypes.includes(nodetype)){
+      newnode = document.createElementNS(svgNS, nodetype);
+      }else{
+        newnode = document.createElement(nodetype);
+     }
 
-    const newnode = document.createElement(nodetype);
+
+
     return newnode;
   }
 
@@ -2626,6 +2635,7 @@ let inc = 0;
     let inc = 0;
       for (const y of _stk) {
       let d = obj.datum[inc] || 0;
+      // console.log(d);
           fn = fn.bind(y);// this can be used from fn
         fn(y, d, inc);
       inc++;
