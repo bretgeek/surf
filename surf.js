@@ -799,7 +799,7 @@ str = str(y)
       }
      if(isFunction(str)){
            ss = str(obj.datum[inc] || 0, inc);
-      console.log(ss);
+      // console.log(ss);
          inc++;
         }
    
@@ -2578,12 +2578,16 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
    */
   // FOREVERY
   function forEvery(str, fn) {
+let inc = 0;
     for (const y of _stk) {
+      let i = obj.datum[inc] || 0;
       // log(str);
       if (y.matches(str)) {
         if (isFunction(fn)) {
+      let d = obj.datum[inc] || 0;
           fn = fn.bind(y);// this can be used from fn
-          fn(y);
+          fn(y, d, inc);
+     inc++;
         }
       }
     }
@@ -2621,9 +2625,9 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
     if (isFunction(fn)) {
     let inc = 0;
       for (const y of _stk) {
-      let i = obj.datum[inc] || 0;
+      let d = obj.datum[inc] || 0;
           fn = fn.bind(y);// this can be used from fn
-        fn(y, i);
+        fn(y, d, inc);
       inc++;
       }
     }
