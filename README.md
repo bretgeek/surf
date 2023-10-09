@@ -2,7 +2,7 @@
 # Surf JS
   
     
-[<img alt="Surf JS"  src="imgs/logo.png" />](https://surf.monster/)
+[<img alt="Surf JS"  src="imgs/logo1.png" />](https://surf.monster/)
 ## A Small Plugin Extendable Animation, Reactive Element Template Library and JQuery Alternative.
 
 
