@@ -1312,7 +1312,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
 
     let dummy = el;
     if (!dummy) {
-        dummy = $().createNode(node);
+        dummy = Surf().createNode(node);
     }
     let tobj = {
         onFrame: {},
@@ -1451,7 +1451,7 @@ function timeline({ el = false, node="div", restartable=false, keepalive=false, 
 
         stop: (fn=()=>{}) => {
 
-            let dums = $(dummy).all();
+            let dums = Surf(dummy).all();
             dums.forEach((e) => {
    //             console.log("stopped");
                 e.cancel = true
