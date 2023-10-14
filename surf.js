@@ -806,10 +806,22 @@ str = str(y)
       if (!y.templateHTML) {
         __init(y);
       }
-     if(isFunction(str)){
-           ss = str(obj.datum[inc] || 0, inc);
-      // console.log(ss);
-         inc++;
+  
+     // If str is a function 
+     if(isFunction(ss)){
+      
+       // If there is data passed in iterate over the data
+       if(obj.datum.length){
+       ss = "";
+        let dinc = 0;
+        obj.datum.forEach((index) => {
+        ss += str(index, dinc);
+        dinc++;
+       console.log(ss);
+        });
+        }else{
+           ss = str();
+        }
         }
    
       if (isNumber(limit) && inc <= limit) {
