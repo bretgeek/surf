@@ -817,7 +817,7 @@ str = str(y)
         obj.datum.forEach((index) => {
         ss += str(index, dinc);
         dinc++;
-       console.log(ss);
+       // console.log(ss);
         });
         }else{
            ss = str();
