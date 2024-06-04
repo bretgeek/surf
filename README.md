@@ -35,7 +35,7 @@
 
 * **Super Small!** - currently at around  ~16KB minified (smaller if gzipped).
 
-* **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX.
+* **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX. (See customElement plugin to make your own custom component tags like <my-tag></my-tag> too);
 
 
 * **Reactive Element Templates** - Reactive element templates are strings in your HTML that look like  {{msg}}  and once initialized can become ANYTHING you desire when you desire. When your data changes you can set the template to your new data, new HTML or even new components!
