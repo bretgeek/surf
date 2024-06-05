@@ -49,6 +49,7 @@
            const shadowRoot = this.attachShadow({ mode: "open" });
            if (css) {
              let style = document.createElement("style");
+             style.id = name;
              style.append(css);
              shadowRoot.appendChild(style);
            }
@@ -81,11 +82,21 @@
          }
 
          if (css) {
-           let style = document.createElement("style");
+           let style = document.getElementById(name);
+           let styleExists = true;
+           if (!style) {
+             styleExists = false;
+             style = document.createElement("style");
+             style.id = name;
+           }
            if (clsprefix) {
-             style.append(`.${clsprefix}-${className||name} {  ${css} }`);
+             if (!styleExists) {
+               style.append(`.${clsprefix}-${className||name} {  ${css} }`);
+             }
            } else {
-             style.append(css);
+             if (!styleExists) {
+               style.append(css);
+             }
            }
            document.head.append(style);
          }
@@ -148,3 +159,4 @@
 
  }
  $().register(customElement);
+
