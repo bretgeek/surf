@@ -120,6 +120,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     _eventDispatch: _eventDispatch,
     _rpx: _rpx,
     _rect: _rect,
+    _offset: _offset,
     _cs: _cs,
     _singleDash: _singleDash,
     _camelDash: _camelDash,
@@ -414,6 +415,36 @@ str = str(y)
   }
 
   /**
+   * _offset
+   * _OFFSET
+   * @description Return the number of an elements properties.
+   * @return number
+   */
+  function _offset(el, round=true) {
+    if (isString(el)) {
+      el = document.querySelector(el);
+    }
+
+    if(!el){
+      el = _stk[0];
+    }
+    const rect = el.getBoundingClientRect();
+
+    if (round) {
+      return {
+        left: Math.round(rect.left + window.scrollX),
+        top: Math.round(rect.top + window.scrollY)
+      };
+
+    } else {
+      return {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY
+      };
+    } 
+  } 
+
+  /**
    * _rect
    * _RECT
    * @description Return the number of an elements properties.
@@ -424,6 +455,10 @@ str = str(y)
     if (isString(el)) {
       e = document.querySelector(el);
     }
+    // so you can use first on stack or the el param
+    if(!e){
+      e = _stk[0];
+     }
 
     const allow = [
       "x",
