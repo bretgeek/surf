@@ -425,9 +425,6 @@ str = str(y)
       el = document.querySelector(el);
     }
 
-    if(!el){
-      el = _stk[0];
-    }
     const rect = el.getBoundingClientRect();
 
     if (round) {
@@ -455,10 +452,6 @@ str = str(y)
     if (isString(el)) {
       e = document.querySelector(el);
     }
-    // so you can use first on stack or the el param
-    if(!e){
-      e = _stk[0];
-     }
 
     const allow = [
       "x",
