@@ -1,7 +1,7 @@
 /**
  * drag
  * DRAG
- * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.maindrawn', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
+ * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.container', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
  *   function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
  *@return {object}
  */
