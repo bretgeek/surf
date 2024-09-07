@@ -1,7 +1,8 @@
 /**
  * drag
  * DRAG
- * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.container', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
+ * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.maindrawn', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
+* axis is either x or y and will constrain dragging to that axis
  *   function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
  *@return {object}
  */
@@ -75,6 +76,7 @@ return false;
     if (cursor) {
       Surf(dragee).css(`cursor: ${cursor};`);
     }
+    // all settings of dragee must be defined here
     dragee.active = false;
     dragee.currentX = dragee.currentX || 0;
     dragee.currentY = dragee.currentY || 0;
@@ -83,6 +85,17 @@ return false;
     dragee.xOffset = 0;
     dragee.yOffset = 0;
     dragee.containment = document.querySelector(contain);
+
+        if(axis && axis !== "x" && axis !== "y"){
+          axis = false;
+        }
+  
+        if(axis){
+         dragee.axis = axis;
+        //  console.log(dragee.axis);
+        }
+
+
     //for debugging in dev tools
     if (dragee.containment) {
       Surf(dragee).attr('data-surfcontain', contain);
@@ -138,7 +151,6 @@ return false;
       if (e.target.classList.contains('surf-draggable')) {
 
         curtarget = e.target;
-
         containLeft = Surf()._rect(curtarget.containment, 'left', true);
         containRight = Surf()._rect(curtarget.containment, 'width', true) + containLeft;
         containTop = Surf()._rect(curtarget.containment, 'top', true);
@@ -189,14 +201,13 @@ return false;
           Surf(e.target).css('user-select: none; cursor: pointer;');
           curtarget.active = true;
         }
-        //      setTranslate(e.target.currentX, e.target.currentY, e.target);
 
-        if (axis) {
-          if (axis == 'y') {
+        if (curtarget.axis) {
+          if (curtarget.axis === 'y') {
 
             setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
           }
-          if (axis == 'x') {
+          if (curtarget.axis === 'x') {
 
             setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
           }
@@ -223,7 +234,6 @@ return false;
      }
     */
     function dragEnd(e) {
-      // TODO try setting a dela and check if elements are outside cointaner and put them back in
       //console.log(cont);
       try {
         if (e.target !== curtarget) {
@@ -242,21 +252,12 @@ return false;
         origY = curtarget.currentY
 
 
-        //  setTranslate(curtarget.currentX, curtarget.currentY, curtarget);
-        /*
-        setTimeout(()=> {
-        console.log(initialX)
-        let drags = $(".surf-draggable").all();
-        // loop through and check em all and put back inside container
-        }, 1000)
-        */
-
-        if (axis) {
-          if (axis == 'y') {
+        if (curtarget.axis) {
+          if (curtarget.axis === 'y') {
 
             setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
           }
-          if (axis == 'x') {
+          if (curtarget.axis === 'x') {
 
             setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
           }
@@ -269,55 +270,7 @@ return false;
 
       } catch (e) {}
 
-      if (curtarget) {
-
-        let curtargetLeft = Surf()._rect(curtarget, 'left', true);
-        let curtargetWidth = Surf()._rect(curtarget, 'width', true);
-        let curtargetRight = Surf()._rect(curtarget, 'left', true) + curtargetWidth;
-        let curtargetHeight = Surf()._rect(curtarget, 'height', true);
-        let curtargetTop = Surf()._rect(curtarget, 'y', true); //  - curtarget.offsetTop + (curtargetHeight*2) ;
-        let curtargetBottom = Surf()._rect(curtarget, 'y', true) + curtargetHeight;
-
-
-        // TODO make one for Right
-        // if swipe too fast left fix
-        //console.log("left " + curtargetLeft + "contLeft "+containLeft) 
-        if (curtarget && curtargetLeft < (containLeft - curtargetWidth / 2)) {
-          curtarget.active = false;
-          console.log("put it back")
-          $(curtarget).css(`left: 20px; `);
-          //setTranslate(20, curtarget.currentY, curtarget);
-          curtarget.initialX = 20;
-          curtarget.currentX = 20;
-        }
-
-        // if swipe too fast top fix
-        if (curtarget && curtargetTop < containTop - (curtargetWidth / 2)) {
-          curtarget.active = false;
-          console.log("put it back")
-          $(curtarget).css(`top: ${origY}px;`);
-          setTranslate(curtarget.currentX, -origY, curtarget);
-          curtarget.initialY = origY;
-          curtarget.currentY = origY;
-        }
-
-
-        console.log("bottom " + curtargetBottom + " contTop " + (containBottom))
-        // if swipe too fast bootom fix
-        if (curtarget && curtargetTop > containBottom) {
-          curtarget.active = false;
-          console.log("put it back")
-          $(curtarget).css(`top: -${origY}px;`);
-          //setTranslate(curtarget.currentX, origY, curtarget);
-
-          curtarget.initialY = origY;
-          curtarget.currentY = origY;
-        }
-
-
-      }
-
-
+     
     } // end dragEnd
 
 
@@ -346,21 +299,6 @@ return false;
         //console.log(curtargetHeight)
 
         if (e.type === 'touchmove') {
-
-          // FIX for swipes that are too fast and cause target to be lost off screen
-          // LEFT X
-          let clientL = e.touches[0].clientX + containLeft - (curtargetLeft - (curtargetWidth * 4))
-          if (clientL < containLeft) {
-            curtarget.currentX = Math.round(containLeft - initialX - (curtargetWidth / 4));
-            return;
-          }
-
-          // RIGHT X 
-          let clientR = e.touches[0].clientX - containRight + (curtargetRight - (curtargetWidth * 2));
-          if (clientR >= containRight) {
-            curtarget.currentX = Math.round(containRight - initialX - (curtargetWidth / 4));
-            return;
-          }
 
           curtarget.currentX = Math.round(e.touches[0].clientX - initialX);
           curtarget.currentY = Math.round(e.touches[0].clientY - initialY);
@@ -431,12 +369,12 @@ return false;
 
 
 
-        if (axis) {
-          if (axis == 'y') {
+        if (curtarget.axis) {
+          if (curtarget.axis === 'y') {
 
             setTranslate(curtarget.initialX, curtarget.currentY, curtarget);
           }
-          if (axis == 'x') {
+          if (curtarget.axis === 'x') {
 
             setTranslate(curtarget.currentX, curtarget.initialY, curtarget);
           }
