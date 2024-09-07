@@ -2,7 +2,7 @@
  * drag
  * DRAG
  * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.maindrawn', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
-* axis is either x or y and will constrain dragging to that axis
+ * axis is either x or y and will constrain dragging to that axis
  *   function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
  *@return {object}
  */
@@ -14,50 +14,46 @@ function drag({ draghandle = false, cursor = false, contain = 'body', containDis
 
   cont = $(contain).first();
 
-var timestamp = null;
-var lastMouseX = null;
-var lastMouseY = null;
+  var timestamp = null;
+  var lastMouseX = null;
+  var lastMouseY = null;
 
-// if the mouse or touch is too fast just stop in order to prevent people from swiping elements out of their container
-function tooFast(e){
-e.screenX = e.screenX || e.touches[0].clientX;
-e.screenY = e.screenY || e.touches[0].clientY;
- 
+  // if the mouse or touch is too fast just stop in order to prevent people from swiping elements out of their container
+  function tooFast(e) {
+    e.screenX = e.screenX || e.touches[0].clientX;
+    e.screenY = e.screenY || e.touches[0].clientY;
+
     if (timestamp === null) {
-        timestamp = Date.now();
-        lastMouseX = e.screenX;
-        lastMouseY = e.screenY;
-        return;
+      timestamp = Date.now();
+      lastMouseX = e.screenX;
+      lastMouseY = e.screenY;
+      return;
     }
 
     var now = Date.now();
-    var dt =  now - timestamp;
+    var dt = now - timestamp;
     var dx = e.screenX - lastMouseX;
     var dy = e.screenY - lastMouseY;
     var speedX = Math.round(dx / dt * 100);
     var speedY = Math.round(dy / dt * 100);
 
-   timestamp = now;
+    timestamp = now;
     lastMouseX = e.screenX;
     lastMouseY = e.screenY;
-// if too fast return true
-if(Number(speedX.toString().replace(/-/, "")) > 190 ){
-     console.log(speedX);
-return true;
-} 
-return false; 
-};
+    // if too fast return true
+    if (Number(speedX.toString().replace(/-/, "")) > 400) {
+      console.log(speedX);
+      return true;
+    }
+    return false;
+  };
 
 
 
 
   function isTouching({ el = false, el2 = false }) { // el2 is self if omitted
-    if (typeof(el2) !== 'document') { // do not make el2 document! 
-      return this;
-    }
-    if (!el2) {
-      el2 = this.stk[0];
-    }
+
+
     const elRect = el.getBoundingClientRect();
     const el2Rect = el2.getBoundingClientRect();
 
@@ -86,14 +82,14 @@ return false;
     dragee.yOffset = 0;
     dragee.containment = document.querySelector(contain);
 
-        if(axis && axis !== "x" && axis !== "y"){
-          axis = false;
-        }
-  
-        if(axis){
-         dragee.axis = axis;
-        //  console.log(dragee.axis);
-        }
+    if (axis && axis !== "x" && axis !== "y") {
+      axis = false;
+    }
+
+    if (axis) {
+      dragee.axis = axis;
+      //  console.log(dragee.axis);
+    }
 
 
     //for debugging in dev tools
@@ -102,15 +98,14 @@ return false;
     }
     const parentContainer = dragee.parentNode || dragee.parentElement; // for dragEnd
     let dropEl;
-    if (drop && isString(drop)) {
-      dropEl = document.querySelector(drop);
+    if (drop && Surf().isString(drop)) {
+      dropEl = $(`${drop}`).all();
     }
 
     let overEl;
-    if (over && isString(over)) {
-      overEl = document.querySelector(over);
+    if (over && Surf().isString(over)) {
+      overEl = $(`${over}`).all();
     }
-
 
 
     parentContainer.addEventListener('touchstart', dragStart, { passive: false });
@@ -242,10 +237,27 @@ return false;
         // console.log('etype '+e.type)
         initialX = Surf()._cs(curtarget, 'left');
         initialY = Surf()._cs(curtarget, 'top');
-        if (dropEl && isTouching({ el: dropEl }) && active) {
-          dropfn({ dragee: curtarget, dropee: dropEl });
-          curtarget.active = false;
+        if (dropEl) {
+          dropEl.forEach((d) => {
+            if (isTouching({
+                el: d,
+                el2: curtarget
+              })) {
+              //  console.log(dropEl.length);
+              dropfn({
+                dragee: curtarget,
+                dropee: d
+              });
+              curtarget.active = false;
+            }
+            curtarget.active = false;
+            curtarget.style.zIndex = null
+          });
         }
+
+
+
+
         curtarget.active = false;
         curtarget.style.zIndex = null
 
@@ -270,7 +282,7 @@ return false;
 
       } catch (e) {}
 
-     
+
     } // end dragEnd
 
 
@@ -278,13 +290,13 @@ return false;
       e.preventDefault();
       if (curtarget && curtarget.active && curtarget.classList.contains('surf-draggable')) {
 
-          let ms =  tooFast(e);
-          if(ms){
+        let ms = tooFast(e);
+        if (ms) {
           Surf(curtarget).trigger('mouseup');
           return;
-          }
+        }
 
-         curtarget.xOffset = curtarget.currentX;
+        curtarget.xOffset = curtarget.currentX;
 
         let curtargetLeft = Surf()._rect(curtarget, 'left', true);
         let curtargetWidth = Surf()._rect(curtarget, 'width', true);
@@ -308,9 +320,25 @@ return false;
           curtarget.currentY = Math.round(e.clientY - initialY);
         }
 
-        if (overEl && isTouching({ el: overEl }) && Surf().isFunction(overfn) && active) {
-          overfn({ dragee: curtarget, dropee: overEl });
+
+
+        // do the same things here as we did for dropEl 
+        if (overEl) {
+          Surf(`${over}`).all().forEach((o) => {
+            if (isTouching({
+                el: o,
+                el2: curtarget
+              }) && Surf().isFunction(overfn) && curtarget.active) {
+
+              overfn({
+                dragee: curtarget,
+                dropee: o
+              });
+
+            }
+          });
         }
+
 
 
 
