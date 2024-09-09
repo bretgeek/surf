@@ -10,7 +10,7 @@
 let cont = document;
 let origY = 0;
 
-function drag({ draghandle = false, cursor = false, contain = 'body', containDistance = 20, dropfn = false, drop = false, over = false, overfn = false, zIndex = 1, axis = false } = {}) {
+function drag({ draghandle = false, cursor = false, contain = 'body', killspeed = 400, containDistance = 20, dropfn = false, drop = false, over = false, overfn = false, zIndex = 1, axis = false } = {}) {
 
   cont = $(contain).first();
 
@@ -41,7 +41,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', containDis
     lastMouseX = e.screenX;
     lastMouseY = e.screenY;
     // if too fast return true
-    if (Number(speedX.toString().replace(/-/, "")) > 400) {
+    if (Number(speedX.toString().replace(/-/, "")) > killspeed) {
       console.log(speedX);
       return true;
     }
@@ -116,7 +116,17 @@ function drag({ draghandle = false, cursor = false, contain = 'body', containDis
     parentContainer.addEventListener('mousedown', dragStart, true);
     parentContainer.addEventListener('mouseup', dragEnd, true);
     parentContainer.parentNode.addEventListener('mouseup', dragEnd, true);
-    // document.body.addEventListener('mouseup', dragEnd, true);
+
+      // trigger mouse up if contain and mouse is out of bounds
+      if(cont){
+       console.log("here");
+        function lfn(){
+          Surf(dragee).trigger("mouseup") ;
+        }
+         parentContainer.addEventListener('mouseleave', lfn , true);
+      } 
+         
+      
 
     parentContainer.addEventListener('mousemove', doDrag, true);
 
