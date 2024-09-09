@@ -1,9 +1,10 @@
 /**
  * drag
  * DRAG
- * @description Make elements dragabble, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.maindrawn', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
+ * @description Make elements dragabble or swipeable ... does not include a working sortable (maybe you will make one?).
+ *, Example: Surf(myRef).drag({draghandle: '.draggable', contain: '.maindrawn', drop: '.stop', dropfn: dropfn}); - where dropfn exists as:
  * axis is either x or y and will constrain dragging to that axis
- *   function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
+ * function dropfn({dragee=false, dropee=false} ){  console.log('DROPPED '+Surf(dragee).text());  }
  *@return {object}
  */
 // set cursor if cursor is true
@@ -56,13 +57,13 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
 
     const elRect = el.getBoundingClientRect();
     const el2Rect = el2.getBoundingClientRect();
-
-    return !(
-      ((elRect.top + elRect.height) < (el2Rect.top)) ||
+    let t = ((elRect.top + elRect.height) < (el2Rect.top)) ||
       (elRect.top > (el2Rect.top + el2Rect.height)) ||
       ((elRect.left + elRect.width) < el2Rect.left) ||
-      (elRect.left > (el2Rect.left + el2Rect.width))
-    );
+      (elRect.left > (el2Rect.left + el2Rect.width));
+    // console.log(!t);
+
+    return !t;
   }
 
 
@@ -97,14 +98,12 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
       Surf(dragee).attr('data-surfcontain', contain);
     }
     const parentContainer = dragee.parentNode || dragee.parentElement; // for dragEnd
-    let dropEl;
     if (drop && Surf().isString(drop)) {
-      dropEl = $(`${drop}`).all();
+      dragee.dropEl = $(`${drop}`).all();
     }
 
-    let overEl;
     if (over && Surf().isString(over)) {
-      overEl = $(`${over}`).all();
+      dragee.overEl = $(`${over}`).all();
     }
 
 
@@ -117,16 +116,16 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
     parentContainer.addEventListener('mouseup', dragEnd, true);
     parentContainer.parentNode.addEventListener('mouseup', dragEnd, true);
 
-      // trigger mouse up if contain and mouse is out of bounds
-      if(cont){
-       console.log("here");
-        function lfn(){
-          Surf(dragee).trigger("mouseup") ;
-        }
-         parentContainer.addEventListener('mouseleave', lfn , true);
-      } 
-         
-      
+    // trigger mouse up if contain and mouse is out of bounds
+    if (cont) {
+      // console.log("here");
+      function lfn() {
+        Surf(dragee).trigger("mouseup");
+      }
+      parentContainer.addEventListener('mouseleave', lfn, true);
+    }
+
+
 
     parentContainer.addEventListener('mousemove', doDrag, true);
 
@@ -247,21 +246,21 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
         // console.log('etype '+e.type)
         initialX = Surf()._cs(curtarget, 'left');
         initialY = Surf()._cs(curtarget, 'top');
-        if (dropEl) {
-          dropEl.forEach((d) => {
+        if (dragee.dropEl) {
+          dragee.dropEl.forEach((d) => {
+
             if (isTouching({
                 el: d,
-                el2: curtarget
-              })) {
-              //  console.log(dropEl.length);
+                el2: e.target
+              }) && d != e.target && e.target == curtarget) {
               dropfn({
-                dragee: curtarget,
+                dragee: e.target,
                 dropee: d
               });
               curtarget.active = false;
             }
             curtarget.active = false;
-            curtarget.style.zIndex = null
+            curtarget.style.zIndex = zIndex || null
           });
         }
 
@@ -269,7 +268,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
 
 
         curtarget.active = false;
-        curtarget.style.zIndex = null
+        curtarget.style.zIndex = zIndex || null
 
         origY = curtarget.currentY
 
@@ -333,15 +332,15 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
 
 
         // do the same things here as we did for dropEl 
-        if (overEl) {
+        if (dragee.overEl) {
           Surf(`${over}`).all().forEach((o) => {
             if (isTouching({
                 el: o,
-                el2: curtarget
-              }) && Surf().isFunction(overfn) && curtarget.active) {
+                el2: e.target
+              }) && o !== e.target && Surf().isFunction(overfn)) {
 
               overfn({
-                dragee: curtarget,
+                dragee: e.target,
                 dropee: o
               });
 
