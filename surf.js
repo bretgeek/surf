@@ -488,6 +488,10 @@ str = str(y)
     }
     if (el) {
       let cs = getComputedStyle(el).getPropertyValue(prop) || null;
+        // don't round if not a number despite if trim was passed in as true otherwise you will get NaN
+        if(!isNumber(cs)){
+          trim = false;
+        }  
       if (trim) {
         try {
           cs = _rpx(cs);
@@ -893,7 +897,7 @@ str = str(y)
     }
     //get the id
     if (s[3]) {
-     console.log('s3 is '+ s[3]);
+    // console.log('s3 is '+ s[3]);
       el.id = s[3];
     }
 
