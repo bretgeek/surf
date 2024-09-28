@@ -145,7 +145,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
     }
   }
 
-  // Config - so you can configure Surf external and replace anything you want!
+  // Config - so you can configure Surf externally and replace anything you want!
   if (allowConfig) {
     Surf.config = Surf.prototype; // plugin is just a friendlier reference to prototype :)
     Surf.config.conf = Surf.config.conf || {};
@@ -203,7 +203,7 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
       }
     }
     
-    // if an objext like {}  
+    // if an object like {}  
     if (isObject(itr)) {
           _stk.push(itr);
     }
