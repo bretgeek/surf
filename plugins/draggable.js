@@ -43,7 +43,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
     lastMouseY = e.screenY;
     // if too fast return true
     if (Number(speedX.toString().replace(/-/, "")) > killspeed) {
-      console.log(speedX);
+      // console.log(speedX);
       return true;
     }
     return false;
@@ -356,6 +356,11 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           // console.log('hit top')
           curtarget.yOffset = curtarget.currentY + containDistance;
           Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')+containDistance}px;`);
+
+          let tp = Number(Surf()._cs(curtarget, 'top', true).replace(/px/, "")) + containDistance;  
+          Surf(curtarget).css(`top: ${tp}px;`);
+
+ 
           return;
         } else {
 
@@ -368,8 +373,9 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           //console.log(curtarget.containment.offsetTop)
           //   console.log('hit bottom')
           curtarget.yOffset = curtarget.currentY - containDistance;
-          Surf(curtarget).css(`top: ${Surf()._cs(curtarget, 'top')-containDistance}px;`);
 
+          let bt = Number(Surf()._cs(curtarget, 'top', true).replace(/px/, "")) - containDistance;  
+          Surf(curtarget).css(`top: ${bt}px;`);
 
           return;
 
@@ -383,7 +389,10 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           //console.log(curtarget.containment.offsetTop)
           // console.log('hit left')
           curtarget.xOffset = curtarget.currentX + containDistance;
-          Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')+containDistance}px;`);
+          //Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')+containDistance}px;`);
+          let lt = Number(Surf()._cs(curtarget, 'left', true).replace(/px/, "")) + containDistance; 
+          Surf(curtarget).css(`left: ${lt}px;`);
+
 
           return;
         } else {
@@ -396,8 +405,10 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           //console.log(curtarget.containment.offsetTop)
           // console.log('hit right')
           curtarget.xOffset = curtarget.currentX - containDistance;
-          Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')-containDistance}px;`);
+          let rt = Number(Surf()._cs(curtarget, 'left', true).replace(/px/, "")) - containDistance; 
+          Surf(curtarget).css(`left: ${rt}px;`);
 
+// console.log(`${Surf()._cs(curtarget, 'left', true)}`);
           return;
         } else {
 
