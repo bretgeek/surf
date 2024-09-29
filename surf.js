@@ -489,6 +489,12 @@ str = str(y)
     }
     if (el) {
       let cs = getComputedStyle(el).getPropertyValue(prop) || null;
+
+     // if trim but cs doesn't start with a number then set trim to false so _rpx doesn't round
+     if (trim && !cs.match(/^\d/)) {
+      trim = false;
+     } 
+
       if (trim) {
         try {
           cs = _rpx(cs);
