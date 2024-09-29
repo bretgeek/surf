@@ -355,7 +355,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
         if (curtargetTop < containTop) {
           // console.log('hit top')
           curtarget.yOffset = curtarget.currentY + containDistance;
-          let tp = Number(Surf()._cs(curtarget, 'top', true)) + containDistance;  
+          let tp = Surf()._cs(curtarget, 'top', true) + containDistance;  
           Surf(curtarget).css(`top: ${tp}px;`);
  
           return;
@@ -371,7 +371,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           //   console.log('hit bottom')
           curtarget.yOffset = curtarget.currentY - containDistance;
 
-          let bt = Number(Surf()._cs(curtarget, 'top', true)) - containDistance;  
+          let bt = Surf()._cs(curtarget, 'top', true) - containDistance;  
           Surf(curtarget).css(`top: ${bt}px;`);
 
           return;
@@ -387,7 +387,7 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
           // console.log('hit left')
           curtarget.xOffset = curtarget.currentX + containDistance;
           //Surf(curtarget).css(`left: ${Surf()._cs(curtarget, 'left')+containDistance}px;`);
-          let lt = Number(Surf()._cs(curtarget, 'left', true)) + containDistance; 
+          let lt = Surf()._cs(curtarget, 'left', true) + containDistance; 
           Surf(curtarget).css(`left: ${lt}px;`);
 
 
@@ -400,9 +400,10 @@ function drag({ draghandle = false, cursor = false, contain = 'body', killspeed 
         // CONTAIN RIGHT
         if (curtargetRight > containRight) {
           //console.log(curtarget.containment.offsetTop)
-           console.log('hit right')
+          //  console.log('hit right')
           curtarget.xOffset = curtarget.currentX - containDistance;
-          let rt = Number(Surf()._cs(curtarget, 'left', true)) - containDistance; 
+          let rt = Surf()._cs(curtarget, 'left', true) - containDistance; 
+          // console.log(rt);
           Surf(curtarget).css(`left: ${rt}px;`);
 
 // console.log(`${Surf()._cs(curtarget, 'left', true)}`);
