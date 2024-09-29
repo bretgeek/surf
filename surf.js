@@ -476,7 +476,8 @@ str = str(y)
     }
   }
 
-  /**
+
+/**
    * _cs
    * _CS
    * @description Return computed Styles of el.
@@ -488,21 +489,20 @@ str = str(y)
     }
     if (el) {
       let cs = getComputedStyle(el).getPropertyValue(prop) || null;
-        // don't round if not a number despite if trim was passed in as true otherwise you will get NaN
-        if(!isNumber(cs)){
-          trim = false;
-        }  
       if (trim) {
         try {
           cs = _rpx(cs);
         } catch (e) {
-         // log(e);
+     //  log(e);
           throw e;
         }
       }
       return cs;
     }
   }
+
+
+
 
   /**
    * _sfilter
