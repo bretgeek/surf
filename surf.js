@@ -14,7 +14,7 @@
 
 function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
-  // First we need to do some setup before we can hit the narly waves.
+  // First we need to do some setup before we can hit the gnarly waves.
 
 
   // For setState Proxy to el.state
@@ -304,9 +304,6 @@ function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
-
-
-
 
   /**
    * setState
