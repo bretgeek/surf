@@ -1392,7 +1392,8 @@
             return;
           }
 
-          //Make different delay calls based on fps and endTime/itr
+          // Make different delay calls based on fps and endTime vs. itr
+          // A note about ease: You don't have to use it (see example at applyEase)  but if you do you can always adjust it later by multiplying o.ease to a different number
 
           let delayobj = {
             fps: fps,
@@ -1581,7 +1582,7 @@
 
 
         // FPS and FPS with endTime  
-        // exampless : $('#app').delay({ fps: 24, endTime: 2000, fn: (e,i,inc)=> {   console.log('foo'+inc )  } });
+        // examples : $('#app').delay({ fps: 24, endTime: 2000, fn: (e,i,inc)=> {   console.log('foo'+inc )  } });
         // OR:  $('#app2').delay({ fps: 24, endTime: 5000, fn: (e,i,inc)=> {   console.log('foo 2 '+inc )  } }); 
         // Using fps - if fps is passed in means this delay call will run until cancelled fps (N frames per second)
         if (isNumber(fps)) {
