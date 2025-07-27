@@ -1408,6 +1408,7 @@
               }
 
               let frame = o.inc.toString();
+              tobj.frame = o.inc;
               if (tobj.onFrame[frame]) {
                 tobj.onFrame[frame](o);
               }
@@ -1428,6 +1429,7 @@
                 }
 
                 let frame = o.inc.toString();
+                tobj.frame = o.inc;
                 if (tobj.onFrame[frame]) {
                   tobj.onFrame[frame](o);
                 }
@@ -1449,6 +1451,7 @@
                 }
 
                 let frame = o.inc.toString();
+                tobj.frame = o.inc;
                 if (tobj.onFrame[frame]) {
                   tobj.onFrame[frame](o);
                 }
@@ -1468,6 +1471,7 @@
                 }
 
                 let frame = o.inc.toString();
+                tobj.frame = o.inc;
                 if (tobj.onFrame[frame]) {
                   tobj.onFrame[frame](o);
                 }
@@ -1486,6 +1490,7 @@
                 tobj.autostop(o);
 
                 let frame = o.inc.toString();
+                tobj.frame = o.inc;
                 if (tobj.onFrame[frame]) {
                   tobj.onFrame[frame](o);
                 }
