@@ -2757,8 +2757,8 @@
     /**
      * clone
      * CLONE
-     * @description Clone what is on the stack - if true clone events too.
-     * @return object
+     * @description Clone what is on the stack - if true clone events too. 
+     * @return Element
      */
     function clone(deep = false, { events = false } = {}) {
       let newstk = [];
@@ -2786,9 +2786,9 @@
         }
         newstk.push(newel);
       }
-      _stk = newstk; // now future chains will be operate on the new stack
+      _stk = newstk; 
       // log(newstk)
-      return this;
+      return _stk;
     }
 
     /**
