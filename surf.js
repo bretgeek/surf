@@ -2806,7 +2806,6 @@ function movieclip({fps = 24, cfn = false, alive = false } = {}){ // cfn is only
      * @description remove class of param s from all elements of stack.
      * @return Object
      */
-    // removeClass
     function removeClass(s) {
       addClass(s, true); // call addClass with remove option
       return this;
@@ -2816,7 +2815,9 @@ function movieclip({fps = 24, cfn = false, alive = false } = {}){ // cfn is only
      * clone
      * CLONE
      * @description Clone what is on the stack - if true clone events too. 
-     * @return Element
+     * @return Array
+     * let mylone = $(el).clone(); // clones are returned in an array,  if you want the first one do:
+     * myclone = myclone[0];
      */
     function clone(deep = false, { events = false } = {}) {
       let newstk = [];
