@@ -2817,7 +2817,7 @@ function movieclip({fps = 24, cfn = false, alive = false } = {}){ // cfn is only
      * @description Clone what is on the stack - if true clone events too. 
      * @return Array
      * let mylone = $(el).clone(); // clones are returned in an array,  if you want the first one do:
-     * myclone = myclone[0];
+     * myclone = $(myclone)[0];
      */
     function clone(deep = false, { events = false } = {}) {
       let newstk = [];
