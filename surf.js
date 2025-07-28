@@ -1496,9 +1496,10 @@
           Surf(dummy).delay(delayobj);
         },
 
-        play: () => { tobj.stop(tobj.start) },
+        // passing in framenum to play will let you play from that frame so always pass in the number of the frame before
+        play: (framenum=0) => { tobj.stop(framenum, tobj.start) },
 
-        stop: (fn = () => {}) => {
+        stop: (framenum, fn = () => {}) => {
 
           let dums = Surf(dummy).all();
           dums.forEach((e) => {
@@ -1507,10 +1508,11 @@
             e.qisrun = false;
             setTimeout(() => {
               e.cancel = false;
-              e.inc = 0;
-              e.frame = 0
+              e.inc = framenum;
+              e.frame = framenum;
               fn();
             }, 500);
+
             if (!el && !restartable) {
               e.remove();
             }
