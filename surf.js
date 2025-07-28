@@ -107,6 +107,7 @@
       applyEase: applyEase,
       animate: delay,
       timeline: timeline,
+      movieClip: movieclip,
       trigger: trigger,
       find: find,
       children: children,
@@ -1523,6 +1524,61 @@
       return tobj;
     }
 
+
+    /**
+     * movieclip
+     * MOVIECLIP
+     * @description add movieclip timeline to every element in _stk.
+     * @return {Element}
+     * @usage
+     * Add a movieclip timeline to all elements of _stk
+     * let myclip = $("#myclip").first();
+     * $(myclicp).movieClip({fps: 32});
+     * 
+     * Add frame events like you would a timeline: 
+     *  myclip.mc.onFrame[1] = (o)=> { 
+     *    console.log("myclip mc started ");
+     *  }
+     * 
+     *  myclip.mc.onFrame[6] = (o)=> { // setting this onFrame here , causes later frame 1 events not to work
+     *   console.log("myclip frame 6 ");
+     *  }
+     * 
+     * Call with anyling like: $("#myclip").first().mc.play(); , $("#myclip")[0].mc.play(); OR myclip.mc.play() if myclip references an element
+     * Add labels like myclip.mc.addLabel("talk", 6); then later myclip.play("talk");
+     */
+
+function movieclip({fps = 24, cfn = false, alive = false } = {}){ // cfn is only required if you want to monitor the frames of the clip
+      for (const y of _stk) {
+        let mc = $().timeline({el: y, fps: fps, cfn: cfn, keepalive: alive,  }); // keepalive set to true will run until stopped i.e. for mainloops
+    // you can add a label like "talk" and a frame then say el.mc.talk() to goto and play from that frame
+    mc.addLabel = function( name=false, num=false ){
+      if (name && num ){
+        
+        y[name] = function(){
+          y.mc.stop(); 
+          y.mc.frame = num-1;
+          y.mc.gotoAndPlay(num-1);
+        }
+      }
+    };
+
+    mc.gotoAndPlay = function( num=1 ){
+      mc.stop();
+      mc.frame = num;
+      mc.play(num);
+      // console.log(mc.frame)
+    };
+
+    mc.gotoAndStop = function( num=1 ){
+      mc.frame = num;
+      mc.stop();
+    };
+
+    y.mc = mc;
+  } 
+      return this
+}
 
 
     /**
