@@ -33,7 +33,7 @@
 
 ### Features
 
-* **Super Small!** - currently at around  ~16KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~18KB minified (smaller if gzipped).
 
 * **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX. (See customElement plugin to make your own custom component tags like &lt;my-tag>&lt;/my-tag> too);
 
@@ -46,6 +46,8 @@
 * **Extendable** - Highly configurable (you can change anything you want about the base functionality with a run time config) and it's extendable with plugins.
 
 * **A Delay/Animation Queue** - An iteratable and cancellable delay queue for building custom effects and animations.
+
+* **Timelines and MovieClips - Timelines for frame based animations.
 
 * **Lightweight JQuery Clone** - Optionally, can be used as a general purpose JQuery like library.
 
@@ -369,6 +371,8 @@ I hope you have enjoyed this short tutorial on getting started with **Surf JS** 
 
 
 
+## Delay/Timelines/Movieclips
+**See:** https://surf.monster details and examples.
 
 
 ## Extending Surf JS
