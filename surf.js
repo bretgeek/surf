@@ -1544,7 +1544,7 @@
      *   console.log("myclip frame 6 ");
      *  }
      * 
-     * Call with anyling like: $("#myclip").first().mc.play(); , $("#myclip")[0].mc.play(); OR myclip.mc.play() if myclip references an element
+     * Call with: $("#myclip").first().mc.play(); , $("#myclip")[0].mc.play(); OR myclip.mc.play() if myclip references an element
      * Add labels like myclip.mc.addLabel("talk", 6); then later myclip.play("talk");
      */
 
