@@ -10,7 +10,7 @@
 
 ### What is it?
 
-**Surf JS** is a small ~16kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
+**Surf JS** is a small ~19kb plugin extendable JavaScript utility and animation library _as well as_ a component library for building user interfaces (UI).
 
 
 
@@ -33,7 +33,7 @@
 
 ### Features
 
-* **Super Small!** - currently at around  ~18KB minified (smaller if gzipped).
+* **Super Small!** - currently at around  ~19KB minified (smaller if gzipped).
 
 * **Build with Components** - Optional component based syntax allowing you to build your UI with components without using JSX. (See customElement plugin to make your own custom component tags like &lt;my-tag>&lt;/my-tag> too);
 
