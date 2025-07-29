@@ -451,6 +451,10 @@ Here is a list of **Surf JS's** public methods all of which can be used from wit
 
 * **delay** - Execute function for every element in _stk after a delay with optional iterations.
 
+* **timeline** - Create individual timelines with frame based events.
+
+* **moveClip** - Create timelines with frame based events for all elements of stack.
+
 * **fadein** - fade in an element with speed in milliseconds and an option display setting to end with.
 
 * **fadeOut** - fade out an element with speed in milliseconds and an option display setting to end with.
