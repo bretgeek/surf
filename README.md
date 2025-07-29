@@ -47,7 +47,7 @@
 
 * **A Delay/Animation Queue** - An iteratable and cancellable delay queue for building custom effects and animations.
 
-* **Timelines and MovieClips - Timelines for frame based animations.
+* **Timelines and MovieClips** - Timelines for frame based animations.
 
 * **Lightweight JQuery Clone** - Optionally, can be used as a general purpose JQuery like library.
 
