@@ -1512,7 +1512,7 @@
               e.inc = framenum;
               e.frame = framenum;
               fn();
-            }, 500);
+            }, 5);
 
             if (!el && !restartable) {
               e.remove();
