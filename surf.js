@@ -2,10 +2,10 @@
    * SURF
    * (c) 2022 Bret Lowry
    * @license MIT
-   * @description Surf JS is a JavaScript Library for Reactive Element Templates with component based rendering and an insanely small JQuery clone.
+   * @description Surf JS is a JavaScript Library for Reactive Element Templates with optional component based rendering and an insanely small JQuery clone.
    * Note: INTERNAL tools begin with double underscores  __ and are located near where they are first used or by their use.
    * Note: Methods that begin with single underscore _  do not return this and return something else that will break a chain. The createNode method an exception to because it is used most frequently but it does break the chain.
-   * Note: Similarly Methods that begin with is* return a boolean not this and will break the chain.
+   * Note: Methods that begin with is* return a boolean not this and will break the chain.
    * Note: To make searching for methods easier, Search for method names using all caps example: CSS or ISFUNCTION
    * @author BRET LOWRY <bretgeek@gmail.com>
    * @constructor
@@ -14,7 +14,7 @@
 
   function Surf(itr, { allowConfig = true, allowPlugins = true } = {}) {
 
-    // First we need to do some setup before we can hit the gnarly waves.
+    // First we need to do some setup before we can hit the gnarly DOM surfing waves.
 
 
     // For setState Proxy to el.state
