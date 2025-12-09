@@ -1,4 +1,4 @@
-  /**
+  /*
    * SURF
    * (c) 2022 Bret Lowry
    * @license MIT
